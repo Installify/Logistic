@@ -10,24 +10,27 @@ import {
   BarChart3,
   Settings
 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface SidebarProps {
   activeModule: string;
   setActiveModule: (module: string) => void;
 }
 
-const menuItems = [
-  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { id: "shipments", label: "Shipments", icon: Package },
-  { id: "customers", label: "Customers", icon: Users },
-  { id: "accounting", label: "Accounting", icon: Calculator },
-  { id: "invoices", label: "E-Invoicing", icon: FileText },
-  { id: "cargo", label: "Cargo & Dimensions", icon: Truck },
-  { id: "reports", label: "Reports", icon: BarChart3 },
-  { id: "settings", label: "Settings", icon: Settings },
-];
-
 export const Sidebar = ({ activeModule, setActiveModule }: SidebarProps) => {
+  const { t } = useLanguage();
+
+  const menuItems = [
+    { id: "dashboard", label: t('sidebar.dashboard'), icon: LayoutDashboard },
+    { id: "shipments", label: t('sidebar.shipments'), icon: Package },
+    { id: "customers", label: t('sidebar.customers'), icon: Users },
+    { id: "accounting", label: t('sidebar.accounting'), icon: Calculator },
+    { id: "invoices", label: t('sidebar.invoices'), icon: FileText },
+    { id: "cargo", label: t('sidebar.cargo'), icon: Truck },
+    { id: "reports", label: t('sidebar.reports'), icon: BarChart3 },
+    { id: "settings", label: t('sidebar.settings'), icon: Settings },
+  ];
+
   return (
     <div className="w-64 bg-slate-900 text-white flex flex-col">
       <div className="p-6 border-b border-slate-800">
@@ -36,8 +39,8 @@ export const Sidebar = ({ activeModule, setActiveModule }: SidebarProps) => {
             <Truck className="h-6 w-6 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-bold">LogisCRM</h2>
-            <p className="text-slate-400 text-sm">Freight & Logistics</p>
+            <h2 className="text-xl font-bold">{t('sidebar.title')}</h2>
+            <p className="text-slate-400 text-sm">{t('sidebar.subtitle')}</p>
           </div>
         </div>
       </div>
@@ -68,8 +71,8 @@ export const Sidebar = ({ activeModule, setActiveModule }: SidebarProps) => {
       
       <div className="p-4 border-t border-slate-800">
         <div className="text-xs text-slate-400">
-          <p>Integrated Accounting System</p>
-          <p className="text-green-400 mt-1">● All modules connected</p>
+          <p>{t('sidebar.footer')}</p>
+          <p className="text-green-400 mt-1">● {t('sidebar.status')}</p>
         </div>
       </div>
     </div>

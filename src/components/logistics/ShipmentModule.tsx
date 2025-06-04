@@ -1,11 +1,10 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Ship, Plane, Truck, Plus, Search, Filter } from "lucide-react";
+import { Ship, Plane, Truck, Package, Plus, Search, Filter } from "lucide-react";
 
 export const ShipmentModule = () => {
   const [searchTerm, setSearchTerm] = useState("");
