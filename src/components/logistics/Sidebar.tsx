@@ -18,7 +18,8 @@ interface SidebarProps {
 }
 
 export const Sidebar = ({ activeModule, setActiveModule }: SidebarProps) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const isRTL = language === 'ar';
 
   const menuItems = [
     { id: "dashboard", label: t('sidebar.dashboard'), icon: LayoutDashboard },
@@ -34,7 +35,7 @@ export const Sidebar = ({ activeModule, setActiveModule }: SidebarProps) => {
   return (
     <div className="w-64 bg-slate-900 text-white flex flex-col">
       <div className="p-6 border-b border-slate-800">
-        <div className="flex items-center space-x-3">
+        <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
           <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
             <Truck className="h-6 w-6 text-white" />
           </div>
@@ -54,7 +55,7 @@ export const Sidebar = ({ activeModule, setActiveModule }: SidebarProps) => {
                 <button
                   onClick={() => setActiveModule(item.id)}
                   className={cn(
-                    "w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors",
+                    `w-full flex items-center px-4 py-3 rounded-lg transition-colors ${isRTL ? 'space-x-reverse space-x-3 text-right' : 'space-x-3 text-left'}`,
                     activeModule === item.id
                       ? "bg-blue-600 text-white"
                       : "text-slate-300 hover:bg-slate-800 hover:text-white"

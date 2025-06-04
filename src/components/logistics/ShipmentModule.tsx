@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -5,9 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Ship, Plane, Truck, Package, Plus, Search, Filter } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const ShipmentModule = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const { t, language } = useLanguage();
+  const isRTL = language === 'ar';
 
   const shipments = [
     {
@@ -67,35 +71,35 @@ export const ShipmentModule = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold text-gray-900">Shipment Management</h2>
+        <h2 className="text-3xl font-bold text-gray-900">{t('shipments.title')}</h2>
         <Button>
           <Plus className="h-4 w-4 mr-2" />
-          New Shipment
+          {t('shipments.new')}
         </Button>
       </div>
 
       <Tabs defaultValue="all" className="space-y-6">
         <div className="flex items-center justify-between">
           <TabsList>
-            <TabsTrigger value="all">All Shipments</TabsTrigger>
-            <TabsTrigger value="sea">Sea Freight</TabsTrigger>
-            <TabsTrigger value="air">Air Freight</TabsTrigger>
-            <TabsTrigger value="land">Land Transport</TabsTrigger>
+            <TabsTrigger value="all">{t('shipments.all')}</TabsTrigger>
+            <TabsTrigger value="sea">{t('shipments.sea')}</TabsTrigger>
+            <TabsTrigger value="air">{t('shipments.air')}</TabsTrigger>
+            <TabsTrigger value="land">{t('shipments.land')}</TabsTrigger>
           </TabsList>
           
-          <div className="flex items-center space-x-2">
+          <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Search className={`absolute top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 ${isRTL ? 'right-3' : 'left-3'}`} />
               <Input
-                placeholder="Search shipments..."
+                placeholder={t('shipments.search')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 w-64"
+                className={`w-64 ${isRTL ? 'pr-10' : 'pl-10'}`}
               />
             </div>
             <Button variant="outline">
               <Filter className="h-4 w-4 mr-2" />
-              Filter
+              {t('shipments.filter')}
             </Button>
           </div>
         </div>
@@ -105,40 +109,40 @@ export const ShipmentModule = () => {
             <Card key={shipment.id} className="hover:shadow-lg transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-2">
+                  <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
+                    <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                       {getModeIcon(shipment.mode)}
                       <span className="font-bold text-lg">{shipment.id}</span>
                     </div>
                     <Badge className={getStatusColor(shipment.status)}>
-                      {shipment.status}
+                      {t(`status.${shipment.status.toLowerCase().replace(' ', '')}`)}
                     </Badge>
                   </div>
-                  <div className="text-right">
+                  <div className={isRTL ? 'text-left' : 'text-right'}>
                     <p className="font-semibold text-lg">{shipment.value}</p>
-                    <p className="text-sm text-gray-600">ETA: {shipment.eta}</p>
+                    <p className="text-sm text-gray-600">{t('shipments.eta')}: {shipment.eta}</p>
                   </div>
                 </div>
                 
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Route</p>
+                    <p className="text-sm font-medium text-gray-600">{t('shipments.route')}</p>
                     <p className="text-sm">{shipment.origin} → {shipment.destination}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Customer</p>
+                    <p className="text-sm font-medium text-gray-600">{t('shipments.customer')}</p>
                     <p className="text-sm">{shipment.customer}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Cargo</p>
+                    <p className="text-sm font-medium text-gray-600">{t('shipments.cargo')}</p>
                     <p className="text-sm">{shipment.containers || shipment.weight}</p>
                   </div>
                 </div>
                 
-                <div className="mt-4 flex space-x-2">
-                  <Button variant="outline" size="sm">Track</Button>
-                  <Button variant="outline" size="sm">Documents</Button>
-                  <Button variant="outline" size="sm">Invoice</Button>
+                <div className={`mt-4 flex ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
+                  <Button variant="outline" size="sm">{t('shipments.track')}</Button>
+                  <Button variant="outline" size="sm">{t('shipments.documents')}</Button>
+                  <Button variant="outline" size="sm">{t('shipments.invoice')}</Button>
                 </div>
               </CardContent>
             </Card>

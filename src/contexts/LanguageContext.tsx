@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 type Language = 'en' | 'ar';
 
@@ -135,11 +135,22 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return translations[language][key] || key;
   };
 
+  useEffect(() => {
+    const html = document.documentElement;
+    if (language === 'ar') {
+      html.setAttribute('dir', 'rtl');
+      html.classList.add('rtl');
+      html.classList.remove('ltr');
+    } else {
+      html.setAttribute('dir', 'ltr');
+      html.classList.add('ltr');
+      html.classList.remove('rtl');
+    }
+  }, [language]);
+
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>
-      <div className={language === 'ar' ? 'rtl' : 'ltr'} dir={language === 'ar' ? 'rtl' : 'ltr'}>
-        {children}
-      </div>
+      {children}
     </LanguageContext.Provider>
   );
 };
