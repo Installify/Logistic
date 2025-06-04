@@ -30,6 +30,24 @@ const translations = {
     'sidebar.footer': 'Integrated Accounting System',
     'sidebar.status': 'All modules connected',
     
+    // Dashboard
+    'dashboard.title': 'Dashboard',
+    'dashboard.exportReport': 'Export Report',
+    'dashboard.newShipment': 'New Shipment',
+    'dashboard.activeShipments': 'Active Shipments',
+    'dashboard.totalCustomers': 'Total Customers',
+    'dashboard.monthlyRevenue': 'Monthly Revenue',
+    'dashboard.growthRate': 'Growth Rate',
+    'dashboard.fromLastMonth': 'from last month',
+    'dashboard.recentShipments': 'Recent Shipments',
+    'dashboard.alertsNotifications': 'Alerts & Notifications',
+    'dashboard.shipmentDelayed': 'Shipment SH005 Delayed',
+    'dashboard.delayReason': 'Expected delay: 2 days due to port congestion',
+    'dashboard.invoiceOverdue': 'Invoice #INV-2024-001 Overdue',
+    'dashboard.paymentPending': 'Payment pending for 15 days',
+    'dashboard.newCustomer': 'New Customer Registration',
+    'dashboard.customerVerification': 'ABC Logistics requires document verification',
+    
     // Shipment Module
     'shipments.title': 'Shipment Management',
     'shipments.new': 'New Shipment',
@@ -86,6 +104,24 @@ const translations = {
     'sidebar.settings': 'الإعدادات',
     'sidebar.footer': 'نظام محاسبة متكامل',
     'sidebar.status': 'جميع الوحدات متصلة',
+    
+    // Dashboard
+    'dashboard.title': 'لوحة التحكم',
+    'dashboard.exportReport': 'تصدير التقرير',
+    'dashboard.newShipment': 'شحنة جديدة',
+    'dashboard.activeShipments': 'الشحنات النشطة',
+    'dashboard.totalCustomers': 'إجمالي العملاء',
+    'dashboard.monthlyRevenue': 'الإيرادات الشهرية',
+    'dashboard.growthRate': 'معدل النمو',
+    'dashboard.fromLastMonth': 'من الشهر الماضي',
+    'dashboard.recentShipments': 'الشحنات الأخيرة',
+    'dashboard.alertsNotifications': 'التنبيهات والإشعارات',
+    'dashboard.shipmentDelayed': 'تأخير الشحنة SH005',
+    'dashboard.delayReason': 'التأخير المتوقع: يومان بسبب ازدحام الميناء',
+    'dashboard.invoiceOverdue': 'الفاتورة #INV-2024-001 متأخرة',
+    'dashboard.paymentPending': 'الدفع معلق لمدة 15 يوماً',
+    'dashboard.newCustomer': 'تسجيل عميل جديد',
+    'dashboard.customerVerification': 'ABC Logistics تتطلب التحقق من المستندات',
     
     // Shipment Module
     'shipments.title': 'إدارة الشحنات',
