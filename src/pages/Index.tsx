@@ -1,11 +1,44 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useState } from "react";
+import { Sidebar } from "@/components/logistics/Sidebar";
+import { Dashboard } from "@/components/logistics/Dashboard";
+import { ShipmentModule } from "@/components/logistics/ShipmentModule";
+import { CustomerModule } from "@/components/logistics/CustomerModule";
+import { AccountingModule } from "@/components/logistics/AccountingModule";
+import { InvoiceModule } from "@/components/logistics/InvoiceModule";
+import { CargoModule } from "@/components/logistics/CargoModule";
+import { Header } from "@/components/logistics/Header";
 
 const Index = () => {
+  const [activeModule, setActiveModule] = useState("dashboard");
+
+  const renderActiveModule = () => {
+    switch (activeModule) {
+      case "dashboard":
+        return <Dashboard />;
+      case "shipments":
+        return <ShipmentModule />;
+      case "customers":
+        return <CustomerModule />;
+      case "accounting":
+        return <AccountingModule />;
+      case "invoices":
+        return <InvoiceModule />;
+      case "cargo":
+        return <CargoModule />;
+      default:
+        return <Dashboard />;
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-gray-50 flex">
+      <Sidebar activeModule={activeModule} setActiveModule={setActiveModule} />
+      <div className="flex-1 flex flex-col">
+        <Header />
+        <main className="flex-1 p-6 overflow-auto">
+          {renderActiveModule()}
+        </main>
       </div>
     </div>
   );
