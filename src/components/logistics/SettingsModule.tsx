@@ -12,7 +12,8 @@ import {
   Save,
   Plus,
   Edit,
-  Trash2
+  Trash2,
+  Mail
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -49,25 +50,36 @@ export const SettingsModule = () => {
       name: "Customs API",
       status: "Connected",
       description: "Real-time customs clearance updates",
-      lastSync: "2024-01-10 14:30"
+      lastSync: "2024-01-10 14:30",
+      icon: Zap
     },
     {
       name: "Shipping Lines API",
       status: "Connected", 
       description: "Container tracking and schedules",
-      lastSync: "2024-01-10 14:25"
+      lastSync: "2024-01-10 14:25",
+      icon: Zap
     },
     {
       name: "Payment Gateway",
       status: "Disconnected",
       description: "Online payment processing",
-      lastSync: "Never"
+      lastSync: "Never",
+      icon: Zap
     },
     {
       name: "SMS Service",
       status: "Connected",
       description: "SMS notifications and alerts",
-      lastSync: "2024-01-10 14:20"
+      lastSync: "2024-01-10 14:20",
+      icon: Zap
+    },
+    {
+      name: "Zoho SMTP API",
+      status: "Disconnected",
+      description: "Email delivery service for notifications",
+      lastSync: "Never",
+      icon: Mail
     }
   ];
 
@@ -312,7 +324,7 @@ export const SettingsModule = () => {
                   <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
                     <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
                       <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                        <Zap className="h-5 w-5 text-gray-600" />
+                        <integration.icon className="h-5 w-5 text-gray-600" />
                       </div>
                       <div>
                         <p className="font-medium">{integration.name}</p>
