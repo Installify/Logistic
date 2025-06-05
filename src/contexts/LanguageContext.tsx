@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 type Language = 'en' | 'ar';
@@ -236,6 +235,34 @@ const translations = {
     'status.paid': 'Paid',
     'status.overdue': 'Overdue',
     'status.draft': 'Draft',
+    
+    // Settings Module - Integration Configuration
+    'settings.smtpServer': 'SMTP Server',
+    'settings.enterSmtpServer': 'Enter SMTP server address',
+    'settings.port': 'Port',
+    'settings.encryption': 'Encryption',
+    'settings.username': 'Username',
+    'settings.enterEmail': 'Enter email address',
+    'settings.password': 'Password',
+    'settings.enterPassword': 'Enter password',
+    'settings.apiEndpoint': 'API Endpoint',
+    'settings.enterApiEndpoint': 'Enter API endpoint URL',
+    'settings.apiKey': 'API Key',
+    'settings.enterApiKey': 'Enter API key',
+    'settings.region': 'Region',
+    'settings.selectRegion': 'Select Region',
+    'settings.shippingLines': 'Shipping Lines',
+    'settings.selectShippingLine': 'Select Shipping Line',
+    'settings.provider': 'Provider',
+    'settings.senderNumber': 'Sender Number',
+    'settings.enterSenderNumber': 'Enter sender number',
+    'settings.webhookUrl': 'Webhook URL',
+    'settings.enterWebhookUrl': 'Enter webhook URL',
+    'settings.configureIntegrationSettings': 'Configure integration settings and connection parameters',
+    'settings.testConnection': 'Test Connection',
+    'settings.saveConfiguration': 'Save Configuration',
+    'settings.noConfigurationAvailable': 'No configuration options available for this integration',
+    'settings.lastSync': 'Last sync',
   },
   ar: {
     // Header
@@ -463,6 +490,34 @@ const translations = {
     'status.paid': 'مدفوع',
     'status.overdue': 'متأخر',
     'status.draft': 'مسودة',
+    
+    // Settings Module - Integration Configuration
+    'settings.smtpServer': 'خادم SMTP',
+    'settings.enterSmtpServer': 'أدخل عنوان خادم SMTP',
+    'settings.port': 'المنفذ',
+    'settings.encryption': 'التشفير',
+    'settings.username': 'اسم المستخدم',
+    'settings.enterEmail': 'أدخل عنوان البريد الإلكتروني',
+    'settings.password': 'كلمة المرور',
+    'settings.enterPassword': 'أدخل كلمة المرور',
+    'settings.apiEndpoint': 'نقطة نهاية API',
+    'settings.enterApiEndpoint': 'أدخل رابط نقطة نهاية API',
+    'settings.apiKey': 'مفتاح API',
+    'settings.enterApiKey': 'أدخل مفتاح API',
+    'settings.region': 'المنطقة',
+    'settings.selectRegion': 'اختر المنطقة',
+    'settings.shippingLines': 'خطوط الشحن',
+    'settings.selectShippingLine': 'اختر خط الشحن',
+    'settings.provider': 'مقدم الخدمة',
+    'settings.senderNumber': 'رقم المرسل',
+    'settings.enterSenderNumber': 'أدخل رقم المرسل',
+    'settings.webhookUrl': 'رابط Webhook',
+    'settings.enterWebhookUrl': 'أدخل رابط Webhook',
+    'settings.configureIntegrationSettings': 'تكوين إعدادات التكامل ومعاملات الاتصال',
+    'settings.testConnection': 'اختبار الاتصال',
+    'settings.saveConfiguration': 'حفظ التكوين',
+    'settings.noConfigurationAvailable': 'لا توجد خيارات تكوين متاحة لهذا التكامل',
+    'settings.lastSync': 'آخر مزامنة',
   }
 };
 

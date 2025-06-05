@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,10 +15,20 @@ import {
   Mail
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useState } from "react";
+import { 
+  Sheet, 
+  SheetContent, 
+  SheetDescription, 
+  SheetHeader, 
+  SheetTitle, 
+  SheetTrigger 
+} from "@/components/ui/sheet";
 
 export const SettingsModule = () => {
   const { t, language } = useLanguage();
   const isRTL = language === 'ar';
+  const [selectedIntegration, setSelectedIntegration] = useState(null);
 
   const userAccounts = [
     {
@@ -51,37 +60,168 @@ export const SettingsModule = () => {
       status: "Connected",
       description: "Real-time customs clearance updates",
       lastSync: "2024-01-10 14:30",
-      icon: Zap
+      icon: Zap,
+      configurable: true
     },
     {
       name: "Shipping Lines API",
       status: "Connected", 
       description: "Container tracking and schedules",
       lastSync: "2024-01-10 14:25",
-      icon: Zap
+      icon: Zap,
+      configurable: true
     },
     {
       name: "Payment Gateway",
       status: "Disconnected",
       description: "Online payment processing",
       lastSync: "Never",
-      icon: Zap
+      icon: Zap,
+      configurable: true
     },
     {
       name: "SMS Service",
       status: "Connected",
       description: "SMS notifications and alerts",
       lastSync: "2024-01-10 14:20",
-      icon: Zap
+      icon: Zap,
+      configurable: true
     },
     {
       name: "Zoho SMTP API",
       status: "Disconnected",
       description: "Email delivery service for notifications",
       lastSync: "Never",
-      icon: Mail
+      icon: Mail,
+      configurable: true
     }
   ];
+
+  const renderConfigurationForm = (integration) => {
+    switch (integration.name) {
+      case "Zoho SMTP API":
+        return (
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium text-gray-600">{t('settings.smtpServer')}</label>
+              <Input defaultValue="smtp.zoho.com" placeholder={t('settings.enterSmtpServer')} />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium text-gray-600">{t('settings.port')}</label>
+                <Input defaultValue="587" placeholder="587" />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-600">{t('settings.encryption')}</label>
+                <select className="w-full mt-1 p-2 border rounded-lg">
+                  <option>TLS</option>
+                  <option>SSL</option>
+                  <option>None</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-600">{t('settings.username')}</label>
+              <Input placeholder={t('settings.enterEmail')} />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-600">{t('settings.password')}</label>
+              <Input type="password" placeholder={t('settings.enterPassword')} />
+            </div>
+          </div>
+        );
+      case "Customs API":
+        return (
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium text-gray-600">{t('settings.apiEndpoint')}</label>
+              <Input placeholder={t('settings.enterApiEndpoint')} />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-600">{t('settings.apiKey')}</label>
+              <Input type="password" placeholder={t('settings.enterApiKey')} />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-600">{t('settings.region')}</label>
+              <select className="w-full mt-1 p-2 border rounded-lg">
+                <option>{t('settings.selectRegion')}</option>
+                <option>UAE</option>
+                <option>Saudi Arabia</option>
+                <option>Qatar</option>
+                <option>Kuwait</option>
+              </select>
+            </div>
+          </div>
+        );
+      case "Shipping Lines API":
+        return (
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium text-gray-600">{t('settings.apiEndpoint')}</label>
+              <Input placeholder={t('settings.enterApiEndpoint')} />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-600">{t('settings.apiKey')}</label>
+              <Input type="password" placeholder={t('settings.enterApiKey')} />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-600">{t('settings.shippingLines')}</label>
+              <select className="w-full mt-1 p-2 border rounded-lg">
+                <option>{t('settings.selectShippingLine')}</option>
+                <option>Maersk</option>
+                <option>MSC</option>
+                <option>CMA CGM</option>
+                <option>COSCO</option>
+              </select>
+            </div>
+          </div>
+        );
+      case "SMS Service":
+        return (
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium text-gray-600">{t('settings.provider')}</label>
+              <select className="w-full mt-1 p-2 border rounded-lg">
+                <option>Twilio</option>
+                <option>AWS SNS</option>
+                <option>MessageBird</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-600">{t('settings.apiKey')}</label>
+              <Input type="password" placeholder={t('settings.enterApiKey')} />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-600">{t('settings.senderNumber')}</label>
+              <Input placeholder={t('settings.enterSenderNumber')} />
+            </div>
+          </div>
+        );
+      case "Payment Gateway":
+        return (
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium text-gray-600">{t('settings.provider')}</label>
+              <select className="w-full mt-1 p-2 border rounded-lg">
+                <option>Stripe</option>
+                <option>PayPal</option>
+                <option>Square</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-600">{t('settings.apiKey')}</label>
+              <Input type="password" placeholder={t('settings.enterApiKey')} />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-600">{t('settings.webhookUrl')}</label>
+              <Input placeholder={t('settings.enterWebhookUrl')} />
+            </div>
+          </div>
+        );
+      default:
+        return <p>{t('settings.noConfigurationAvailable')}</p>;
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -329,16 +469,37 @@ export const SettingsModule = () => {
                       <div>
                         <p className="font-medium">{integration.name}</p>
                         <p className="text-sm text-gray-600">{integration.description}</p>
-                        <p className="text-xs text-gray-500">Last sync: {integration.lastSync}</p>
+                        <p className="text-xs text-gray-500">{t('settings.lastSync')}: {integration.lastSync}</p>
                       </div>
                     </div>
                     <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
                       <Badge className={integration.status === "Connected" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
                         {t(`settings.${integration.status.toLowerCase()}`)}
                       </Badge>
-                      <Button variant="outline" size="sm">
-                        {t('settings.configure')}
-                      </Button>
+                      {integration.configurable && (
+                        <Sheet>
+                          <SheetTrigger asChild>
+                            <Button variant="outline" size="sm" onClick={() => setSelectedIntegration(integration)}>
+                              {t('settings.configure')}
+                            </Button>
+                          </SheetTrigger>
+                          <SheetContent className="w-[400px] sm:w-[540px]">
+                            <SheetHeader>
+                              <SheetTitle>{t('settings.configure')} {integration.name}</SheetTitle>
+                              <SheetDescription>
+                                {t('settings.configureIntegrationSettings')}
+                              </SheetDescription>
+                            </SheetHeader>
+                            <div className="py-6">
+                              {renderConfigurationForm(integration)}
+                            </div>
+                            <div className="flex justify-end space-x-2 pt-4">
+                              <Button variant="outline">{t('settings.testConnection')}</Button>
+                              <Button>{t('settings.saveConfiguration')}</Button>
+                            </div>
+                          </SheetContent>
+                        </Sheet>
+                      )}
                     </div>
                   </div>
                 ))}
