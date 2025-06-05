@@ -13,8 +13,12 @@ import {
   Search,
   Calculator
 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const CargoModule = () => {
+  const { t, language } = useLanguage();
+  const isRTL = language === 'ar';
+
   const cargoItems = [
     {
       id: "CARGO001",
@@ -66,15 +70,15 @@ export const CargoModule = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold text-gray-900">Cargo & Dimensions Management</h2>
-        <div className="flex space-x-3">
+        <h2 className="text-3xl font-bold text-gray-900">{t('cargo.title')}</h2>
+        <div className={`flex ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
           <Button variant="outline">
             <Calculator className="h-4 w-4 mr-2" />
-            Volume Calculator
+            {t('cargo.volumeCalculator')}
           </Button>
           <Button>
             <Plus className="h-4 w-4 mr-2" />
-            Add Cargo
+            {t('cargo.add')}
           </Button>
         </div>
       </div>
@@ -83,45 +87,45 @@ export const CargoModule = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Cargo Items</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('cargo.totalCargoItems')}</CardTitle>
             <Package className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">1,247</div>
-            <p className="text-xs text-blue-600 mt-1">Active shipments</p>
+            <p className="text-xs text-blue-600 mt-1">{t('cargo.activeShipments')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Weight</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('cargo.totalWeight')}</CardTitle>
             <Weight className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">2,847 tons</div>
-            <p className="text-xs text-green-600 mt-1">This month</p>
+            <p className="text-xs text-green-600 mt-1">{t('invoices.thisMonth')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Volume</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('cargo.totalVolume')}</CardTitle>
             <Ruler className="h-4 w-4 text-purple-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">15,432 m³</div>
-            <p className="text-xs text-purple-600 mt-1">Cubic meters</p>
+            <p className="text-xs text-purple-600 mt-1">{t('cargo.cubicMeters')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Container Utilization</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('cargo.containerUtilization')}</CardTitle>
             <Truck className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">87.3%</div>
-            <p className="text-xs text-orange-600 mt-1">Average efficiency</p>
+            <p className="text-xs text-orange-600 mt-1">{t('cargo.averageEfficiency')}</p>
           </CardContent>
         </Card>
       </div>
@@ -129,16 +133,16 @@ export const CargoModule = () => {
       <Tabs defaultValue="cargo" className="space-y-6">
         <div className="flex items-center justify-between">
           <TabsList>
-            <TabsTrigger value="cargo">Cargo Items</TabsTrigger>
-            <TabsTrigger value="containers">Container Types</TabsTrigger>
-            <TabsTrigger value="calculator">Dimension Calculator</TabsTrigger>
+            <TabsTrigger value="cargo">{t('cargo.cargoItems')}</TabsTrigger>
+            <TabsTrigger value="containers">{t('cargo.containerTypes')}</TabsTrigger>
+            <TabsTrigger value="calculator">{t('cargo.dimensionCalculator')}</TabsTrigger>
           </TabsList>
           
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <Search className={`absolute top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 ${isRTL ? 'right-3' : 'left-3'}`} />
             <Input
-              placeholder="Search cargo..."
-              className="pl-10 w-64"
+              placeholder={t('cargo.search')}
+              className={`w-64 ${isRTL ? 'pr-10' : 'pl-10'}`}
             />
           </div>
         </div>
@@ -148,15 +152,15 @@ export const CargoModule = () => {
             <Card key={cargo.id} className="hover:shadow-lg transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
-                  <div className="flex items-start space-x-4">
+                  <div className={`flex items-start ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
                     <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                       <Package className="h-6 w-6 text-blue-600" />
                     </div>
                     <div>
                       <h3 className="font-bold text-lg">{cargo.id}</h3>
                       <p className="text-gray-600">{cargo.description}</p>
-                      <p className="text-sm text-gray-500">Customer: {cargo.customer}</p>
-                      <div className="flex items-center space-x-4 mt-2">
+                      <p className="text-sm text-gray-500">{t('shipments.customer')}: {cargo.customer}</p>
+                      <div className={`flex items-center mt-2 ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
                         {cargo.hazardous && (
                           <Badge className="bg-red-100 text-red-800">
                             Hazardous {cargo.hazardClass}
@@ -170,41 +174,41 @@ export const CargoModule = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className={isRTL ? 'text-left' : 'text-right'}>
                     <p className="font-semibold text-xl">{cargo.value}</p>
-                    <p className="text-sm text-gray-600">Shipment: {cargo.shipmentId}</p>
+                    <p className="text-sm text-gray-600">{t('shipments.title')}: {cargo.shipmentId}</p>
                   </div>
                 </div>
                 
                 <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div className="bg-gray-50 p-3 rounded-lg">
-                    <div className="flex items-center space-x-2 mb-1">
+                    <div className={`flex items-center mb-1 ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                       <Ruler className="h-4 w-4 text-gray-600" />
-                      <p className="text-sm font-medium text-gray-600">Dimensions</p>
+                      <p className="text-sm font-medium text-gray-600">{t('cargo.dimensions')}</p>
                     </div>
                     <p className="text-sm font-semibold">{cargo.dimensions}</p>
                   </div>
                   
                   <div className="bg-gray-50 p-3 rounded-lg">
-                    <div className="flex items-center space-x-2 mb-1">
+                    <div className={`flex items-center mb-1 ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                       <Weight className="h-4 w-4 text-gray-600" />
-                      <p className="text-sm font-medium text-gray-600">Weight</p>
+                      <p className="text-sm font-medium text-gray-600">{t('cargo.weight')}</p>
                     </div>
                     <p className="text-sm font-semibold">{cargo.weight}</p>
                   </div>
                   
                   <div className="bg-gray-50 p-3 rounded-lg">
-                    <div className="flex items-center space-x-2 mb-1">
+                    <div className={`flex items-center mb-1 ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                       <Package className="h-4 w-4 text-gray-600" />
-                      <p className="text-sm font-medium text-gray-600">Volume</p>
+                      <p className="text-sm font-medium text-gray-600">{t('cargo.volume')}</p>
                     </div>
                     <p className="text-sm font-semibold">{cargo.volume}</p>
                   </div>
                   
                   <div className="bg-gray-50 p-3 rounded-lg">
-                    <div className="flex items-center space-x-2 mb-1">
+                    <div className={`flex items-center mb-1 ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                       <Truck className="h-4 w-4 text-gray-600" />
-                      <p className="text-sm font-medium text-gray-600">Container</p>
+                      <p className="text-sm font-medium text-gray-600">{t('cargo.container')}</p>
                     </div>
                     <p className="text-sm font-semibold">{cargo.containerType}</p>
                   </div>
@@ -213,15 +217,15 @@ export const CargoModule = () => {
                 {cargo.temperature && (
                   <div className="mt-4 p-3 bg-blue-50 rounded-lg">
                     <p className="text-sm font-medium text-blue-800">
-                      Temperature Requirements: {cargo.temperature}
+                      {t('cargo.temperatureRequirements')}: {cargo.temperature}
                     </p>
                   </div>
                 )}
                 
-                <div className="mt-4 flex space-x-2">
-                  <Button variant="outline" size="sm">View Details</Button>
-                  <Button variant="outline" size="sm">Edit Cargo</Button>
-                  <Button variant="outline" size="sm">Calculate Freight</Button>
+                <div className={`mt-4 flex ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
+                  <Button variant="outline" size="sm">{t('cargo.viewDetails')}</Button>
+                  <Button variant="outline" size="sm">{t('cargo.editCargo')}</Button>
+                  <Button variant="outline" size="sm">{t('cargo.calculateFreight')}</Button>
                 </div>
               </CardContent>
             </Card>
@@ -233,7 +237,7 @@ export const CargoModule = () => {
             {containerTypes.map((container, index) => (
               <Card key={index}>
                 <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
+                  <CardTitle className={`flex items-center ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                     <Truck className="h-5 w-5 text-blue-600" />
                     <span>{container.type}</span>
                   </CardTitle>
@@ -248,7 +252,7 @@ export const CargoModule = () => {
                     <p className="text-lg font-semibold">{container.capacity}</p>
                   </div>
                   <Button variant="outline" className="w-full">
-                    Use for Calculation
+                    {t('cargo.useForCalculation')}
                   </Button>
                 </CardContent>
               </Card>
@@ -259,52 +263,52 @@ export const CargoModule = () => {
         <TabsContent value="calculator">
           <Card>
             <CardHeader>
-              <CardTitle>Freight Volume & Weight Calculator</CardTitle>
+              <CardTitle>{t('cargo.freightCalculator')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-600">Length (cm)</label>
+                  <label className="text-sm font-medium text-gray-600">{t('cargo.length')}</label>
                   <Input placeholder="Enter length" type="number" />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-600">Width (cm)</label>
+                  <label className="text-sm font-medium text-gray-600">{t('cargo.width')}</label>
                   <Input placeholder="Enter width" type="number" />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-600">Height (cm)</label>
+                  <label className="text-sm font-medium text-gray-600">{t('cargo.height')}</label>
                   <Input placeholder="Enter height" type="number" />
                 </div>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-600">Actual Weight (kg)</label>
+                  <label className="text-sm font-medium text-gray-600">{t('cargo.actualWeight')}</label>
                   <Input placeholder="Enter actual weight" type="number" />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-600">Quantity</label>
+                  <label className="text-sm font-medium text-gray-600">{t('cargo.quantity')}</label>
                   <Input placeholder="Number of items" type="number" defaultValue="1" />
                 </div>
               </div>
               
-              <div className="flex space-x-4">
-                <Button>Calculate Volume</Button>
-                <Button variant="outline">Calculate Chargeable Weight</Button>
-                <Button variant="outline">Recommend Container</Button>
+              <div className={`flex ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
+                <Button>{t('cargo.calculateVolume')}</Button>
+                <Button variant="outline">{t('cargo.calculateChargeableWeight')}</Button>
+                <Button variant="outline">{t('cargo.recommendContainer')}</Button>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Calculated Volume</p>
+                  <p className="text-sm font-medium text-gray-600">{t('cargo.calculatedVolume')}</p>
                   <p className="text-lg font-semibold">-- m³</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Volumetric Weight</p>
+                  <p className="text-sm font-medium text-gray-600">{t('cargo.volumetricWeight')}</p>
                   <p className="text-lg font-semibold">-- kg</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Chargeable Weight</p>
+                  <p className="text-sm font-medium text-gray-600">{t('cargo.chargeableWeight')}</p>
                   <p className="text-lg font-semibold">-- kg</p>
                 </div>
               </div>

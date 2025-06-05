@@ -15,8 +15,12 @@ import {
   Edit,
   Clock
 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const InvoiceModule = () => {
+  const { t, language } = useLanguage();
+  const isRTL = language === 'ar';
+
   const invoices = [
     {
       id: "INV-2024-001",
@@ -72,15 +76,15 @@ export const InvoiceModule = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold text-gray-900">E-Invoicing System</h2>
-        <div className="flex space-x-3">
+        <h2 className="text-3xl font-bold text-gray-900">{t('invoices.title')}</h2>
+        <div className={`flex ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
           <Button variant="outline">
             <Download className="h-4 w-4 mr-2" />
-            Bulk Export
+            {t('invoices.bulkExport')}
           </Button>
           <Button>
             <Plus className="h-4 w-4 mr-2" />
-            Create Invoice
+            {t('invoices.create')}
           </Button>
         </div>
       </div>
@@ -89,45 +93,45 @@ export const InvoiceModule = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Invoices</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('invoices.totalInvoices')}</CardTitle>
             <FileText className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">247</div>
-            <p className="text-xs text-blue-600 mt-1">This month</p>
+            <p className="text-xs text-blue-600 mt-1">{t('invoices.thisMonth')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Amount</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('invoices.pendingAmount')}</CardTitle>
             <Clock className="h-4 w-4 text-yellow-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">$127,800</div>
-            <p className="text-xs text-yellow-600 mt-1">12 invoices</p>
+            <p className="text-xs text-yellow-600 mt-1">12 {t('invoices.all')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Overdue Amount</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('invoices.overdueAmount')}</CardTitle>
             <div className="w-4 h-4 bg-red-500 rounded-full" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">$45,200</div>
-            <p className="text-xs text-red-600 mt-1">5 invoices</p>
+            <p className="text-xs text-red-600 mt-1">5 {t('invoices.all')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Collection Rate</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('invoices.collectionRate')}</CardTitle>
             <div className="w-4 h-4 bg-green-500 rounded-full" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">94.2%</div>
-            <p className="text-xs text-green-600 mt-1">On-time payments</p>
+            <p className="text-xs text-green-600 mt-1">{t('invoices.onTimePayments')}</p>
           </CardContent>
         </Card>
       </div>
@@ -135,18 +139,18 @@ export const InvoiceModule = () => {
       <Tabs defaultValue="all" className="space-y-6">
         <div className="flex items-center justify-between">
           <TabsList>
-            <TabsTrigger value="all">All Invoices</TabsTrigger>
-            <TabsTrigger value="pending">Pending</TabsTrigger>
-            <TabsTrigger value="overdue">Overdue</TabsTrigger>
-            <TabsTrigger value="paid">Paid</TabsTrigger>
+            <TabsTrigger value="all">{t('invoices.all')}</TabsTrigger>
+            <TabsTrigger value="pending">{t('invoices.pending')}</TabsTrigger>
+            <TabsTrigger value="overdue">{t('invoices.overdue')}</TabsTrigger>
+            <TabsTrigger value="paid">{t('invoices.paid')}</TabsTrigger>
           </TabsList>
           
-          <div className="flex items-center space-x-2">
+          <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Search className={`absolute top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 ${isRTL ? 'right-3' : 'left-3'}`} />
               <Input
-                placeholder="Search invoices..."
-                className="pl-10 w-64"
+                placeholder={t('invoices.search')}
+                className={`w-64 ${isRTL ? 'pr-10' : 'pl-10'}`}
               />
             </div>
           </div>
@@ -157,22 +161,22 @@ export const InvoiceModule = () => {
             <Card key={invoice.id} className="hover:shadow-lg transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-3">
+                  <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
+                    <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
                       <FileText className="h-6 w-6 text-blue-600" />
                       <div>
                         <p className="font-bold text-lg">{invoice.id}</p>
                         <p className="text-sm text-gray-600">{invoice.customer}</p>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                       {getStatusIcon(invoice.status)}
                       <Badge className={getStatusColor(invoice.status)}>
-                        {invoice.status}
+                        {t(`status.${invoice.status.toLowerCase()}`)}
                       </Badge>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className={isRTL ? 'text-left' : 'text-right'}>
                     <p className="font-semibold text-xl">{invoice.amount}</p>
                     <p className="text-sm text-gray-600">Due: {invoice.dueDate}</p>
                   </div>
@@ -180,35 +184,35 @@ export const InvoiceModule = () => {
                 
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Issue Date</p>
+                    <p className="text-sm font-medium text-gray-600">{t('invoices.issueDate')}</p>
                     <p className="text-sm">{invoice.issueDate}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Shipment Reference</p>
+                    <p className="text-sm font-medium text-gray-600">{t('invoices.shipmentReference')}</p>
                     <p className="text-sm">{invoice.shipmentRef}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Services</p>
+                    <p className="text-sm font-medium text-gray-600">{t('invoices.services')}</p>
                     <p className="text-sm">{invoice.items.join(", ")}</p>
                   </div>
                 </div>
                 
-                <div className="mt-4 flex space-x-2">
+                <div className={`mt-4 flex ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                   <Button variant="outline" size="sm">
                     <Eye className="h-4 w-4 mr-1" />
-                    View
+                    {t('invoices.view')}
                   </Button>
                   <Button variant="outline" size="sm">
                     <Edit className="h-4 w-4 mr-1" />
-                    Edit
+                    {t('invoices.edit')}
                   </Button>
                   <Button variant="outline" size="sm">
                     <Send className="h-4 w-4 mr-1" />
-                    Send
+                    {t('invoices.send')}
                   </Button>
                   <Button variant="outline" size="sm">
                     <Download className="h-4 w-4 mr-1" />
-                    PDF
+                    {t('invoices.pdf')}
                   </Button>
                 </div>
               </CardContent>

@@ -7,6 +7,8 @@ import { CustomerModule } from "@/components/logistics/CustomerModule";
 import { AccountingModule } from "@/components/logistics/AccountingModule";
 import { InvoiceModule } from "@/components/logistics/InvoiceModule";
 import { CargoModule } from "@/components/logistics/CargoModule";
+import { ReportsModule } from "@/components/logistics/ReportsModule";
+import { SettingsModule } from "@/components/logistics/SettingsModule";
 import { Header } from "@/components/logistics/Header";
 
 const Index = () => {
@@ -26,6 +28,10 @@ const Index = () => {
         return <InvoiceModule />;
       case "cargo":
         return <CargoModule />;
+      case "reports":
+        return <ReportsModule />;
+      case "settings":
+        return <SettingsModule />;
       default:
         return <Dashboard />;
     }

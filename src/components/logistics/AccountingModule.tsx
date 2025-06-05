@@ -11,8 +11,12 @@ import {
   Plus,
   Download
 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const AccountingModule = () => {
+  const { t, language } = useLanguage();
+  const isRTL = language === 'ar';
+
   const financialOverview = {
     totalRevenue: "$2,847,500",
     monthlyGrowth: "+18.2%",
@@ -60,15 +64,15 @@ export const AccountingModule = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold text-gray-900">Integrated Accounting</h2>
-        <div className="flex space-x-3">
+        <h2 className="text-3xl font-bold text-gray-900">{t('accounting.title')}</h2>
+        <div className={`flex ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
           <Button variant="outline">
             <Download className="h-4 w-4 mr-2" />
-            Export Reports
+            {t('accounting.exportReports')}
           </Button>
           <Button>
             <Plus className="h-4 w-4 mr-2" />
-            New Transaction
+            {t('accounting.newTransaction')}
           </Button>
         </div>
       </div>
@@ -77,66 +81,66 @@ export const AccountingModule = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('accounting.totalRevenue')}</CardTitle>
             <DollarSign className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{financialOverview.totalRevenue}</div>
-            <p className="text-xs text-green-600 mt-1">{financialOverview.monthlyGrowth} from last month</p>
+            <p className="text-xs text-green-600 mt-1">{financialOverview.monthlyGrowth} {t('dashboard.fromLastMonth')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Outstanding Invoices</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('accounting.outstandingInvoices')}</CardTitle>
             <FileText className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{financialOverview.outstandingInvoices}</div>
-            <p className="text-xs text-orange-600 mt-1">12 pending payments</p>
+            <p className="text-xs text-orange-600 mt-1">12 {t('accounting.pendingPayments')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Cash Flow</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('accounting.cashFlow')}</CardTitle>
             <TrendingUp className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{financialOverview.cashFlow}</div>
-            <p className="text-xs text-blue-600 mt-1">Positive this month</p>
+            <p className="text-xs text-blue-600 mt-1">{t('accounting.positiveThisMonth')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Payment Processing</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('accounting.paymentProcessing')}</CardTitle>
             <CreditCard className="h-4 w-4 text-purple-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">98.5%</div>
-            <p className="text-xs text-purple-600 mt-1">Success rate</p>
+            <p className="text-xs text-purple-600 mt-1">{t('accounting.successRate')}</p>
           </CardContent>
         </Card>
       </div>
 
       <Tabs defaultValue="transactions" className="space-y-6">
         <TabsList>
-          <TabsTrigger value="transactions">Recent Transactions</TabsTrigger>
-          <TabsTrigger value="accounts">Chart of Accounts</TabsTrigger>
-          <TabsTrigger value="reports">Financial Reports</TabsTrigger>
+          <TabsTrigger value="transactions">{t('accounting.recentTransactions')}</TabsTrigger>
+          <TabsTrigger value="accounts">{t('accounting.chartOfAccounts')}</TabsTrigger>
+          <TabsTrigger value="reports">{t('accounting.financialReports')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="transactions">
           <Card>
             <CardHeader>
-              <CardTitle>Recent Transactions</CardTitle>
+              <CardTitle>{t('accounting.recentTransactions')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {recentTransactions.map((transaction) => (
-                  <div key={transaction.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center space-x-4">
+                  <div key={transaction.id} className={`flex items-center justify-between p-4 border rounded-lg ${isRTL ? 'text-right' : 'text-left'}`}>
+                    <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
                       <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
                         <DollarSign className="h-5 w-5 text-gray-600" />
                       </div>
@@ -146,10 +150,10 @@ export const AccountingModule = () => {
                         <p className="text-xs text-gray-500">{transaction.date}</p>
                       </div>
                     </div>
-                    <div className="text-right">
+                    <div className={isRTL ? 'text-left' : 'text-right'}>
                       <p className="font-semibold text-lg">{transaction.amount}</p>
                       <Badge className={transaction.status === "Completed" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}>
-                        {transaction.status}
+                        {t(`status.${transaction.status.toLowerCase()}`)}
                       </Badge>
                     </div>
                   </div>
@@ -162,7 +166,7 @@ export const AccountingModule = () => {
         <TabsContent value="accounts">
           <Card>
             <CardHeader>
-              <CardTitle>Chart of Accounts</CardTitle>
+              <CardTitle>{t('accounting.chartOfAccounts')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -186,24 +190,24 @@ export const AccountingModule = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Profit & Loss</CardTitle>
+                <CardTitle>{t('accounting.profitLoss')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span>Total Revenue</span>
+                    <span>{t('accounting.totalRevenue')}</span>
                     <span className="font-semibold">$2,847,500</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Operating Expenses</span>
+                    <span>{t('accounting.operatingExpenses')}</span>
                     <span className="font-semibold">$1,945,200</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>EBITDA</span>
+                    <span>{t('accounting.ebitda')}</span>
                     <span className="font-semibold">$902,300</span>
                   </div>
                   <div className="border-t pt-2 flex justify-between">
-                    <span className="font-medium">Net Profit</span>
+                    <span className="font-medium">{t('accounting.netProfit')}</span>
                     <span className="font-bold text-green-600">$678,450</span>
                   </div>
                 </div>
@@ -212,20 +216,20 @@ export const AccountingModule = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Balance Sheet Summary</CardTitle>
+                <CardTitle>{t('accounting.balanceSheet')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span>Total Assets</span>
+                    <span>{t('accounting.totalAssets')}</span>
                     <span className="font-semibold">$4,234,500</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Total Liabilities</span>
+                    <span>{t('accounting.totalLiabilities')}</span>
                     <span className="font-semibold">$1,567,200</span>
                   </div>
                   <div className="border-t pt-2 flex justify-between">
-                    <span className="font-medium">Equity</span>
+                    <span className="font-medium">{t('accounting.equity')}</span>
                     <span className="font-bold text-blue-600">$2,667,300</span>
                   </div>
                 </div>
