@@ -1,504 +1,379 @@
+import React, { createContext, useContext } from 'react';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+// Define the structure of our translations
+interface Translations {
+  [key: string]: any;
+}
 
-type Language = 'en' | 'ar';
+// Define the context type
+interface LanguageContextProps {
+  language: string;
+  setLanguage: (lang: string) => void;
+  t: (key: string, params?: { [key: string]: string | number }) => string;
+}
 
-interface LanguageContextType {
-  language: Language;
-  setLanguage: (lang: Language) => void;
-  t: (key: string) => string;
+// Create the context with a default value
+const LanguageContext = createContext<LanguageContextProps>({
+  language: 'en',
+  setLanguage: () => {},
+  t: (key: string) => key, // Default translation returns the key
+});
+
+// Custom hook to use the language context
+export const useLanguage = () => useContext(LanguageContext);
+
+// Translation function
+const translate = (
+  translations: Translations,
+  language: string,
+  key: string,
+  params: { [key: string]: string | number } = {}
+): string => {
+  let translation = translations[language]?.[key] || key;
+
+  for (const paramKey in params) {
+    const regex = new RegExp(`\\{${paramKey}\\}`, 'g');
+    translation = translation.replace(regex, String(params[paramKey]));
+  }
+
+  return translation;
+};
+
+// Language provider component
+interface LanguageProviderProps {
+  children: React.ReactNode;
 }
 
 const translations = {
   en: {
-    // Header
-    'header.title': 'LogisCRM',
-    'header.search': 'Search shipments, customers...',
-    'header.profile': 'Profile',
-    
-    // Sidebar
-    'sidebar.title': 'LogisCRM',
-    'sidebar.subtitle': 'Freight & Logistics',
-    'sidebar.dashboard': 'Dashboard',
-    'sidebar.shipments': 'Shipments',
-    'sidebar.customers': 'Customers',
-    'sidebar.accounting': 'Accounting',
-    'sidebar.invoices': 'E-Invoicing',
-    'sidebar.cargo': 'Cargo & Dimensions',
-    'sidebar.reports': 'Reports',
-    'sidebar.settings': 'Settings',
-    'sidebar.footer': 'Integrated Accounting System',
-    'sidebar.status': 'All modules connected',
-    
-    // Dashboard
-    'dashboard.title': 'Dashboard',
-    'dashboard.exportReport': 'Export Report',
-    'dashboard.newShipment': 'New Shipment',
-    'dashboard.activeShipments': 'Active Shipments',
-    'dashboard.totalCustomers': 'Total Customers',
-    'dashboard.monthlyRevenue': 'Monthly Revenue',
-    'dashboard.growthRate': 'Growth Rate',
-    'dashboard.fromLastMonth': 'from last month',
-    'dashboard.recentShipments': 'Recent Shipments',
-    'dashboard.alertsNotifications': 'Alerts & Notifications',
-    'dashboard.shipmentDelayed': 'Shipment SH005 Delayed',
-    'dashboard.delayReason': 'Expected delay: 2 days due to port congestion',
-    'dashboard.invoiceOverdue': 'Invoice #INV-2024-001 Overdue',
-    'dashboard.paymentPending': 'Payment pending for 15 days',
-    'dashboard.newCustomer': 'New Customer Registration',
-    'dashboard.customerVerification': 'ABC Logistics requires document verification',
-    
-    // Shipment Module
-    'shipments.title': 'Shipment Management',
-    'shipments.new': 'New Shipment',
-    'shipments.all': 'All Shipments',
-    'shipments.sea': 'Sea Freight',
-    'shipments.air': 'Air Freight',
-    'shipments.land': 'Land Transport',
-    'shipments.search': 'Search shipments...',
-    'shipments.filter': 'Filter',
-    'shipments.route': 'Route',
-    'shipments.customer': 'Customer',
-    'shipments.cargo': 'Cargo',
-    'shipments.track': 'Track',
-    'shipments.documents': 'Documents',
-    'shipments.invoice': 'Invoice',
-    'shipments.eta': 'ETA',
-    
-    // Customer Module
-    'customers.title': 'Customer Management',
-    'customers.add': 'Add Customer',
-    'customers.search': 'Search customers...',
-    'customers.filter': 'Filter',
-    'customers.export': 'Export',
-    'customers.totalShipments': 'Total Shipments',
-    'customers.totalValue': 'Total Value',
-    'customers.lastShipment': 'Last shipment',
-    'customers.viewDetails': 'View Details',
-    'customers.newQuote': 'New Quote',
-    
-    // Accounting Module
-    'accounting.title': 'Integrated Accounting',
-    'accounting.newTransaction': 'New Transaction',
-    'accounting.exportReports': 'Export Reports',
-    'accounting.totalRevenue': 'Total Revenue',
-    'accounting.outstandingInvoices': 'Outstanding Invoices',
-    'accounting.cashFlow': 'Cash Flow',
-    'accounting.paymentProcessing': 'Payment Processing',
-    'accounting.successRate': 'Success rate',
-    'accounting.pendingPayments': 'pending payments',
-    'accounting.positiveThisMonth': 'Positive this month',
-    'accounting.recentTransactions': 'Recent Transactions',
-    'accounting.chartOfAccounts': 'Chart of Accounts',
-    'accounting.financialReports': 'Financial Reports',
-    'accounting.profitLoss': 'Profit & Loss',
-    'accounting.balanceSheet': 'Balance Sheet Summary',
-    'accounting.totalAssets': 'Total Assets',
-    'accounting.totalLiabilities': 'Total Liabilities',
-    'accounting.equity': 'Equity',
-    'accounting.operatingExpenses': 'Operating Expenses',
-    'accounting.ebitda': 'EBITDA',
-    'accounting.netProfit': 'Net Profit',
-    
-    // Invoice Module
-    'invoices.title': 'E-Invoicing System',
-    'invoices.create': 'Create Invoice',
-    'invoices.bulkExport': 'Bulk Export',
-    'invoices.totalInvoices': 'Total Invoices',
-    'invoices.thisMonth': 'This month',
-    'invoices.pendingAmount': 'Pending Amount',
-    'invoices.overdueAmount': 'Overdue Amount',
-    'invoices.collectionRate': 'Collection Rate',
-    'invoices.onTimePayments': 'On-time payments',
-    'invoices.all': 'All Invoices',
-    'invoices.pending': 'Pending',
-    'invoices.overdue': 'Overdue',
-    'invoices.paid': 'Paid',
-    'invoices.search': 'Search invoices...',
-    'invoices.issueDate': 'Issue Date',
-    'invoices.shipmentReference': 'Shipment Reference',
-    'invoices.services': 'Services',
-    'invoices.view': 'View',
-    'invoices.edit': 'Edit',
-    'invoices.send': 'Send',
-    'invoices.pdf': 'PDF',
-    
-    // Cargo Module
-    'cargo.title': 'Cargo & Dimensions Management',
-    'cargo.add': 'Add Cargo',
-    'cargo.volumeCalculator': 'Volume Calculator',
-    'cargo.totalCargoItems': 'Total Cargo Items',
-    'cargo.activeShipments': 'Active shipments',
-    'cargo.totalWeight': 'Total Weight',
-    'cargo.totalVolume': 'Total Volume',
-    'cargo.cubicMeters': 'Cubic meters',
-    'cargo.containerUtilization': 'Container Utilization',
-    'cargo.averageEfficiency': 'Average efficiency',
-    'cargo.cargoItems': 'Cargo Items',
-    'cargo.containerTypes': 'Container Types',
-    'cargo.dimensionCalculator': 'Dimension Calculator',
-    'cargo.search': 'Search cargo...',
-    'cargo.dimensions': 'Dimensions',
-    'cargo.weight': 'Weight',
-    'cargo.volume': 'Volume',
-    'cargo.container': 'Container',
-    'cargo.temperatureRequirements': 'Temperature Requirements',
-    'cargo.viewDetails': 'View Details',
-    'cargo.editCargo': 'Edit Cargo',
-    'cargo.calculateFreight': 'Calculate Freight',
-    'cargo.useForCalculation': 'Use for Calculation',
-    'cargo.freightCalculator': 'Freight Volume & Weight Calculator',
-    'cargo.length': 'Length (cm)',
-    'cargo.width': 'Width (cm)',
-    'cargo.height': 'Height (cm)',
-    'cargo.actualWeight': 'Actual Weight (kg)',
-    'cargo.quantity': 'Quantity',
-    'cargo.calculateVolume': 'Calculate Volume',
-    'cargo.calculateChargeableWeight': 'Calculate Chargeable Weight',
-    'cargo.recommendContainer': 'Recommend Container',
-    'cargo.calculatedVolume': 'Calculated Volume',
-    'cargo.volumetricWeight': 'Volumetric Weight',
-    'cargo.chargeableWeight': 'Chargeable Weight',
-    
-    // Reports Module
-    'reports.title': 'Reports & Analytics',
-    'reports.generate': 'Generate Report',
-    'reports.export': 'Export Data',
-    'reports.shipmentReports': 'Shipment Reports',
-    'reports.financialReports': 'Financial Reports',
-    'reports.customerReports': 'Customer Reports',
-    'reports.operationalReports': 'Operational Reports',
-    'reports.monthlyShipments': 'Monthly Shipments',
-    'reports.revenueAnalysis': 'Revenue Analysis',
-    'reports.customerAnalysis': 'Customer Analysis',
-    'reports.performanceMetrics': 'Performance Metrics',
-    'reports.onTimeDelivery': 'On-Time Delivery',
-    'reports.shipmentVolume': 'Shipment Volume',
-    'reports.averageTransitTime': 'Average Transit Time',
-    'reports.customerSatisfaction': 'Customer Satisfaction',
-    'reports.thisYear': 'This year',
-    'reports.lastMonth': 'Last month',
-    'reports.days': 'days',
-    'reports.viewReport': 'View Report',
-    'reports.downloadPdf': 'Download PDF',
-    'reports.scheduleReport': 'Schedule Report',
-    
-    // Settings Module
-    'settings.title': 'System Settings',
-    'settings.save': 'Save Changes',
-    'settings.general': 'General Settings',
-    'settings.notifications': 'Notifications',
-    'settings.users': 'User Management',
-    'settings.integrations': 'Integrations',
-    'settings.companyInfo': 'Company Information',
-    'settings.systemPreferences': 'System Preferences',
-    'settings.emailNotifications': 'Email Notifications',
-    'settings.smsNotifications': 'SMS Notifications',
-    'settings.userAccounts': 'User Accounts',
-    'settings.permissions': 'Permissions & Roles',
-    'settings.apiIntegrations': 'API Integrations',
-    'settings.thirdPartyServices': 'Third-party Services',
-    'settings.companyName': 'Company Name',
-    'settings.address': 'Address',
-    'settings.phone': 'Phone',
-    'settings.email': 'Email',
-    'settings.website': 'Website',
-    'settings.timezone': 'Timezone',
-    'settings.currency': 'Default Currency',
-    'settings.language': 'Language',
-    'settings.dateFormat': 'Date Format',
-    'settings.shipmentAlerts': 'Shipment Alerts',
-    'settings.invoiceReminders': 'Invoice Reminders',
-    'settings.systemUpdates': 'System Updates',
-    'settings.mobileAlerts': 'Mobile Alerts',
-    'settings.enabled': 'Enabled',
-    'settings.disabled': 'Disabled',
-    'settings.addUser': 'Add User',
-    'settings.editUser': 'Edit User',
-    'settings.active': 'Active',
-    'settings.inactive': 'Inactive',
-    'settings.admin': 'Admin',
-    'settings.manager': 'Manager',
-    'settings.operator': 'Operator',
-    'settings.connected': 'Connected',
-    'settings.disconnected': 'Disconnected',
-    'settings.configure': 'Configure',
-    
-    // Status
-    'status.active': 'Active',
-    'status.pending': 'Pending',
-    'status.delivered': 'Delivered',
-    'status.inTransit': 'In Transit',
-    'status.intransit': 'In Transit',
-    'status.loading': 'Loading',
-    'status.customs': 'Customs',
-    'status.completed': 'Completed',
-    'status.paid': 'Paid',
-    'status.overdue': 'Overdue',
-    'status.draft': 'Draft',
+    dashboard: {
+      title: "Dashboard",
+      welcome: "Welcome to LogisCRM",
+      overview: "At a glance",
+      totalShipments: "Total Shipments",
+      monthlyRevenue: "Monthly Revenue",
+      customerSatisfaction: "Customer Satisfaction",
+      shipmentStatus: "Shipment Status",
+      inTransit: "In Transit",
+      delivered: "Delivered",
+      pending: "Pending",
+      recentActivities: "Recent Activities",
+      newShipment: "New Shipment Created",
+      paymentReceived: "Payment Received",
+      supportTicket: "New Support Ticket",
+      viewAll: "View All"
+    },
+    shipments: {
+      title: "Shipments",
+      addShipment: "Add Shipment",
+      shipmentList: "Shipment List",
+      trackingNumber: "Tracking Number",
+      customer: "Customer",
+      origin: "Origin",
+      destination: "Destination",
+      status: "Status",
+      actions: "Actions",
+      viewDetails: "View Details",
+      editShipment: "Edit Shipment",
+      deleteShipment: "Delete Shipment",
+      confirmDelete: "Are you sure you want to delete this shipment?",
+      shipmentDeleted: "Shipment deleted successfully!",
+      noShipments: "No shipments found."
+    },
+    customers: {
+      title: "Customers",
+      addCustomer: "Add Customer",
+      customerList: "Customer List",
+      name: "Name",
+      email: "Email",
+      phone: "Phone",
+      address: "Address",
+      actions: "Actions",
+      viewDetails: "View Details",
+      editCustomer: "Edit Customer",
+      deleteCustomer: "Delete Customer",
+      confirmDelete: "Are you sure you want to delete this customer?",
+      customerDeleted: "Customer deleted successfully!",
+      noCustomers: "No customers found."
+    },
+    accounting: {
+      title: "Accounting",
+      revenue: "Revenue",
+      expenses: "Expenses",
+      profit: "Profit",
+      transactions: "Transactions",
+      date: "Date",
+      description: "Description",
+      amount: "Amount",
+      type: "Type",
+      income: "Income",
+      outcome: "Outcome",
+      noTransactions: "No transactions found."
+    },
+    invoices: {
+      title: "Invoices",
+      createInvoice: "Create Invoice",
+      invoiceList: "Invoice List",
+      invoiceNumber: "Invoice Number",
+      customerName: "Customer Name",
+      issueDate: "Issue Date",
+      dueDate: "Due Date",
+      totalAmount: "Total Amount",
+      status: "Status",
+      paid: "Paid",
+      unpaid: "Unpaid",
+      overdue: "Overdue",
+      actions: "Actions",
+      viewInvoice: "View Invoice",
+      editInvoice: "Edit Invoice",
+      deleteInvoice: "Delete Invoice",
+      confirmDelete: "Are you sure you want to delete this invoice?",
+      invoiceDeleted: "Invoice deleted successfully!",
+      noInvoices: "No invoices found."
+    },
+    cargo: {
+      title: "Cargo",
+      addCargo: "Add Cargo",
+      cargoList: "Cargo List",
+      cargoName: "Cargo Name",
+      weight: "Weight",
+      dimensions: "Dimensions",
+      location: "Location",
+      actions: "Actions",
+      viewDetails: "View Details",
+      editCargo: "Edit Cargo",
+      deleteCargo: "Delete Cargo",
+      confirmDelete: "Are you sure you want to delete this cargo?",
+      cargoDeleted: "Cargo deleted successfully!",
+      noCargo: "No cargo found."
+    },
+    reports: {
+      title: "Reports",
+      generateReport: "Generate Report",
+      reportType: "Report Type",
+      dateRange: "Date Range",
+      salesReport: "Sales Report",
+      shipmentReport: "Shipment Report",
+      customerReport: "Customer Report",
+      generate: "Generate",
+      download: "Download",
+      noReports: "No reports generated."
+    },
+    settings: {
+      title: "Settings",
+      save: "Save Changes",
+      general: "General",
+      notifications: "Notifications", 
+      users: "Users",
+      integrations: "Integrations",
+      payments: "Payment Gateways",
+      companyInfo: "Company Information",
+      companyLogo: "Company Logo",
+      uploadLogo: "Upload Logo",
+      companyName: "Company Name",
+      address: "Address",
+      phone: "Phone",
+      email: "Email",
+      website: "Website",
+      systemPreferences: "System Preferences",
+      timezone: "Timezone",
+      currency: "Currency",
+      language: "Language",
+      dateFormat: "Date Format",
+      emailNotifications: "Email Notifications",
+      smsNotifications: "SMS Notifications",
+      shipmentAlerts: "Shipment Alerts",
+      invoiceReminders: "Invoice Reminders", 
+      systemUpdates: "System Updates",
+      mobileAlerts: "Mobile Alerts",
+      enabled: "Enabled",
+      disabled: "Disabled",
+      userAccounts: "User Accounts",
+      addUser: "Add User",
+      admin: "Admin",
+      manager: "Manager",
+      operator: "Operator",
+      active: "Active",
+      inactive: "Inactive",
+      apiIntegrations: "API Integrations",
+      paymentGateways: "Payment Gateways",
+      connected: "Connected",
+      disconnected: "Disconnected",
+      configure: "Configure"
+    }
   },
   ar: {
-    // Header
-    'header.title': 'نظام اللوجستيات',
-    'header.search': 'البحث في الشحنات والعملاء...',
-    'header.profile': 'الملف الشخصي',
-    
-    // Sidebar
-    'sidebar.title': 'نظام اللوجستيات',
-    'sidebar.subtitle': 'الشحن واللوجستيات',
-    'sidebar.dashboard': 'لوحة التحكم',
-    'sidebar.shipments': 'الشحنات',
-    'sidebar.customers': 'العملاء',
-    'sidebar.accounting': 'المحاسبة',
-    'sidebar.invoices': 'الفوترة الإلكترونية',
-    'sidebar.cargo': 'البضائع والأبعاد',
-    'sidebar.reports': 'التقارير',
-    'sidebar.settings': 'الإعدادات',
-    'sidebar.footer': 'نظام محاسبة متكامل',
-    'sidebar.status': 'جميع الوحدات متصلة',
-    
-    // Dashboard
-    'dashboard.title': 'لوحة التحكم',
-    'dashboard.exportReport': 'تصدير التقرير',
-    'dashboard.newShipment': 'شحنة جديدة',
-    'dashboard.activeShipments': 'الشحنات النشطة',
-    'dashboard.totalCustomers': 'إجمالي العملاء',
-    'dashboard.monthlyRevenue': 'الإيرادات الشهرية',
-    'dashboard.growthRate': 'معدل النمو',
-    'dashboard.fromLastMonth': 'من الشهر الماضي',
-    'dashboard.recentShipments': 'الشحنات الأخيرة',
-    'dashboard.alertsNotifications': 'التنبيهات والإشعارات',
-    'dashboard.shipmentDelayed': 'تأخير الشحنة SH005',
-    'dashboard.delayReason': 'التأخير المتوقع: يومان بسبب ازدحام الميناء',
-    'dashboard.invoiceOverdue': 'الفاتورة #INV-2024-001 متأخرة',
-    'dashboard.paymentPending': 'الدفع معلق لمدة 15 يوماً',
-    'dashboard.newCustomer': 'تسجيل عميل جديد',
-    'dashboard.customerVerification': 'ABC Logistics تتطلب التحقق من المستندات',
-    
-    // Shipment Module
-    'shipments.title': 'إدارة الشحنات',
-    'shipments.new': 'شحنة جديدة',
-    'shipments.all': 'جميع الشحنات',
-    'shipments.sea': 'الشحن البحري',
-    'shipments.air': 'الشحن الجوي',
-    'shipments.land': 'النقل البري',
-    'shipments.search': 'البحث في الشحنات...',
-    'shipments.filter': 'تصفية',
-    'shipments.route': 'المسار',
-    'shipments.customer': 'العميل',
-    'shipments.cargo': 'البضائع',
-    'shipments.track': 'تتبع',
-    'shipments.documents': 'المستندات',
-    'shipments.invoice': 'الفاتورة',
-    'shipments.eta': 'الوصول المتوقع',
-    
-    // Customer Module
-    'customers.title': 'إدارة العملاء',
-    'customers.add': 'إضافة عميل',
-    'customers.search': 'البحث في العملاء...',
-    'customers.filter': 'تصفية',
-    'customers.export': 'تصدير',
-    'customers.totalShipments': 'إجمالي الشحنات',
-    'customers.totalValue': 'القيمة الإجمالية',
-    'customers.lastShipment': 'آخر شحنة',
-    'customers.viewDetails': 'عرض التفاصيل',
-    'customers.newQuote': 'عرض سعر جديد',
-    
-    // Accounting Module
-    'accounting.title': 'المحاسبة المتكاملة',
-    'accounting.newTransaction': 'معاملة جديدة',
-    'accounting.exportReports': 'تصدير التقارير',
-    'accounting.totalRevenue': 'إجمالي الإيرادات',
-    'accounting.outstandingInvoices': 'الفواتير المعلقة',
-    'accounting.cashFlow': 'التدفق النقدي',
-    'accounting.paymentProcessing': 'معالجة المدفوعات',
-    'accounting.successRate': 'معدل النجاح',
-    'accounting.pendingPayments': 'مدفوعات معلقة',
-    'accounting.positiveThisMonth': 'إيجابي هذا الشهر',
-    'accounting.recentTransactions': 'المعاملات الأخيرة',
-    'accounting.chartOfAccounts': 'دليل الحسابات',
-    'accounting.financialReports': 'التقارير المالية',
-    'accounting.profitLoss': 'الأرباح والخسائر',
-    'accounting.balanceSheet': 'ملخص الميزانية العمومية',
-    'accounting.totalAssets': 'إجمالي الأصول',
-    'accounting.totalLiabilities': 'إجمالي الخصوم',
-    'accounting.equity': 'حقوق الملكية',
-    'accounting.operatingExpenses': 'المصروفات التشغيلية',
-    'accounting.ebitda': 'الأرباح قبل الفوائد والضرائب والاستهلاك',
-    'accounting.netProfit': 'صافي الربح',
-    
-    // Invoice Module
-    'invoices.title': 'نظام الفوترة الإلكترونية',
-    'invoices.create': 'إنشاء فاتورة',
-    'invoices.bulkExport': 'تصدير مجمع',
-    'invoices.totalInvoices': 'إجمالي الفواتير',
-    'invoices.thisMonth': 'هذا الشهر',
-    'invoices.pendingAmount': 'المبلغ المعلق',
-    'invoices.overdueAmount': 'المبلغ المتأخر',
-    'invoices.collectionRate': 'معدل التحصيل',
-    'invoices.onTimePayments': 'المدفوعات في الوقت المحدد',
-    'invoices.all': 'جميع الفواتير',
-    'invoices.pending': 'معلقة',
-    'invoices.overdue': 'متأخرة',
-    'invoices.paid': 'مدفوعة',
-    'invoices.search': 'البحث في الفواتير...',
-    'invoices.issueDate': 'تاريخ الإصدار',
-    'invoices.shipmentReference': 'مرجع الشحنة',
-    'invoices.services': 'الخدمات',
-    'invoices.view': 'عرض',
-    'invoices.edit': 'تعديل',
-    'invoices.send': 'إرسال',
-    'invoices.pdf': 'ملف PDF',
-    
-    // Cargo Module
-    'cargo.title': 'إدارة البضائع والأبعاد',
-    'cargo.add': 'إضافة بضائع',
-    'cargo.volumeCalculator': 'حاسبة الحجم',
-    'cargo.totalCargoItems': 'إجمالي عناصر البضائع',
-    'cargo.activeShipments': 'الشحنات النشطة',
-    'cargo.totalWeight': 'الوزن الإجمالي',
-    'cargo.totalVolume': 'الحجم الإجمالي',
-    'cargo.cubicMeters': 'متر مكعب',
-    'cargo.containerUtilization': 'استخدام الحاويات',
-    'cargo.averageEfficiency': 'متوسط الكفاءة',
-    'cargo.cargoItems': 'عناصر البضائع',
-    'cargo.containerTypes': 'أنواع الحاويات',
-    'cargo.dimensionCalculator': 'حاسبة الأبعاد',
-    'cargo.search': 'البحث في البضائع...',
-    'cargo.dimensions': 'الأبعاد',
-    'cargo.weight': 'الوزن',
-    'cargo.volume': 'الحجم',
-    'cargo.container': 'الحاوية',
-    'cargo.temperatureRequirements': 'متطلبات درجة الحرارة',
-    'cargo.viewDetails': 'عرض التفاصيل',
-    'cargo.editCargo': 'تعديل البضائع',
-    'cargo.calculateFreight': 'حساب الشحن',
-    'cargo.useForCalculation': 'استخدام للحساب',
-    'cargo.freightCalculator': 'حاسبة حجم ووزن الشحن',
-    'cargo.length': 'الطول (سم)',
-    'cargo.width': 'العرض (سم)',
-    'cargo.height': 'الارتفاع (سم)',
-    'cargo.actualWeight': 'الوزن الفعلي (كجم)',
-    'cargo.quantity': 'الكمية',
-    'cargo.calculateVolume': 'حساب الحجم',
-    'cargo.calculateChargeableWeight': 'حساب الوزن القابل للشحن',
-    'cargo.recommendContainer': 'اقتراح حاوية',
-    'cargo.calculatedVolume': 'الحجم المحسوب',
-    'cargo.volumetricWeight': 'الوزن الحجمي',
-    'cargo.chargeableWeight': 'الوزن القابل للشحن',
-    
-    // Reports Module
-    'reports.title': 'التقارير والتحليلات',
-    'reports.generate': 'إنشاء تقرير',
-    'reports.export': 'تصدير البيانات',
-    'reports.shipmentReports': 'تقارير الشحنات',
-    'reports.financialReports': 'التقارير المالية',
-    'reports.customerReports': 'تقارير العملاء',
-    'reports.operationalReports': 'التقارير التشغيلية',
-    'reports.monthlyShipments': 'الشحنات الشهرية',
-    'reports.revenueAnalysis': 'تحليل الإيرادات',
-    'reports.customerAnalysis': 'تحليل العملاء',
-    'reports.performanceMetrics': 'مؤشرات الأداء',
-    'reports.onTimeDelivery': 'التسليم في الوقت المحدد',
-    'reports.shipmentVolume': 'حجم الشحنات',
-    'reports.averageTransitTime': 'متوسط وقت النقل',
-    'reports.customerSatisfaction': 'رضا العملاء',
-    'reports.thisYear': 'هذا العام',
-    'reports.lastMonth': 'الشهر الماضي',
-    'reports.days': 'أيام',
-    'reports.viewReport': 'عرض التقرير',
-    'reports.downloadPdf': 'تحميل PDF',
-    'reports.scheduleReport': 'جدولة التقرير',
-    
-    // Settings Module
-    'settings.title': 'إعدادات النظام',
-    'settings.save': 'حفظ التغييرات',
-    'settings.general': 'الإعدادات العامة',
-    'settings.notifications': 'الإشعارات',
-    'settings.users': 'إدارة المستخدمين',
-    'settings.integrations': 'التكاملات',
-    'settings.companyInfo': 'معلومات الشركة',
-    'settings.systemPreferences': 'تفضيلات النظام',
-    'settings.emailNotifications': 'إشعارات البريد الإلكتروني',
-    'settings.smsNotifications': 'إشعارات الرسائل القصيرة',
-    'settings.userAccounts': 'حسابات المستخدمين',
-    'settings.permissions': 'الأذونات والأدوار',
-    'settings.apiIntegrations': 'تكاملات API',
-    'settings.thirdPartyServices': 'خدمات الأطراف الثالثة',
-    'settings.companyName': 'اسم الشركة',
-    'settings.address': 'العنوان',
-    'settings.phone': 'الهاتف',
-    'settings.email': 'البريد الإلكتروني',
-    'settings.website': 'الموقع الإلكتروني',
-    'settings.timezone': 'المنطقة الزمنية',
-    'settings.currency': 'العملة الافتراضية',
-    'settings.language': 'اللغة',
-    'settings.dateFormat': 'تنسيق التاريخ',
-    'settings.shipmentAlerts': 'تنبيهات الشحنات',
-    'settings.invoiceReminders': 'تذكيرات الفواتير',
-    'settings.systemUpdates': 'تحديثات النظام',
-    'settings.mobileAlerts': 'تنبيهات الجوال',
-    'settings.enabled': 'مفعل',
-    'settings.disabled': 'معطل',
-    'settings.addUser': 'إضافة مستخدم',
-    'settings.editUser': 'تعديل مستخدم',
-    'settings.active': 'نشط',
-    'settings.inactive': 'غير نشط',
-    'settings.admin': 'مدير',
-    'settings.manager': 'مدير',
-    'settings.operator': 'مشغل',
-    'settings.connected': 'متصل',
-    'settings.disconnected': 'غير متصل',
-    'settings.configure': 'تكوين',
-    
-    // Status
-    'status.active': 'نشط',
-    'status.pending': 'في الانتظار',
-    'status.delivered': 'تم التوصيل',
-    'status.inTransit': 'في الطريق',
-    'status.intransit': 'في الطريق',
-    'status.loading': 'قيد التحميل',
-    'status.customs': 'الجمارك',
-    'status.completed': 'مكتمل',
-    'status.paid': 'مدفوع',
-    'status.overdue': 'متأخر',
-    'status.draft': 'مسودة',
+    dashboard: {
+      title: "لوحة التحكم",
+      welcome: "مرحبًا بك في LogisCRM",
+      overview: "في لمحة",
+      totalShipments: "إجمالي الشحنات",
+      monthlyRevenue: "الإيرادات الشهرية",
+      customerSatisfaction: "رضا العملاء",
+      shipmentStatus: "حالة الشحن",
+      inTransit: "في العبور",
+      delivered: "تم التسليم",
+      pending: "قيد الانتظار",
+      recentActivities: "الأنشطة الأخيرة",
+      newShipment: "تم إنشاء شحنة جديدة",
+      paymentReceived: "تم استلام الدفعة",
+      supportTicket: "تذكرة دعم جديدة",
+      viewAll: "عرض الكل"
+    },
+    shipments: {
+      title: "الشحنات",
+      addShipment: "إضافة شحنة",
+      shipmentList: "قائمة الشحنات",
+      trackingNumber: "رقم التتبع",
+      customer: "العميل",
+      origin: "الأصل",
+      destination: "الوجهة",
+      status: "الحالة",
+      actions: "الإجراءات",
+      viewDetails: "عرض التفاصيل",
+      editShipment: "تعديل الشحنة",
+      deleteShipment: "حذف الشحنة",
+      confirmDelete: "هل أنت متأكد أنك تريد حذف هذه الشحنة؟",
+      shipmentDeleted: "تم حذف الشحنة بنجاح!",
+      noShipments: "لم يتم العثور على أي شحنات."
+    },
+    customers: {
+      title: "العملاء",
+      addCustomer: "إضافة عميل",
+      customerList: "قائمة العملاء",
+      name: "الاسم",
+      email: "البريد الإلكتروني",
+      phone: "الهاتف",
+      address: "العنوان",
+      actions: "الإجراءات",
+      viewDetails: "عرض التفاصيل",
+      editCustomer: "تعديل العميل",
+      deleteCustomer: "حذف العميل",
+      confirmDelete: "هل أنت متأكد أنك تريد حذف هذا العميل؟",
+      customerDeleted: "تم حذف العميل بنجاح!",
+      noCustomers: "لم يتم العثور على أي عملاء."
+    },
+    accounting: {
+      title: "المحاسبة",
+      revenue: "الإيرادات",
+      expenses: "المصروفات",
+      profit: "الربح",
+      transactions: "المعاملات",
+      date: "التاريخ",
+      description: "الوصف",
+      amount: "المبلغ",
+      type: "النوع",
+      income: "الدخل",
+      outcome: "النتيجة",
+      noTransactions: "لم يتم العثور على أي معاملات."
+    },
+    invoices: {
+      title: "الفواتير",
+      createInvoice: "إنشاء فاتورة",
+      invoiceList: "قائمة الفواتير",
+      invoiceNumber: "رقم الفاتورة",
+      customerName: "اسم العميل",
+      issueDate: "تاريخ الإصدار",
+      dueDate: "تاريخ الاستحقاق",
+      totalAmount: "المبلغ الإجمالي",
+      status: "الحالة",
+      paid: "مدفوعة",
+      unpaid: "غير مدفوعة",
+      overdue: "متأخرة",
+      actions: "الإجراءات",
+      viewInvoice: "عرض الفاتورة",
+      editInvoice: "تعديل الفاتورة",
+      deleteInvoice: "حذف الفاتورة",
+      confirmDelete: "هل أنت متأكد أنك تريد حذف هذه الفاتورة؟",
+      invoiceDeleted: "تم حذف الفاتورة بنجاح!",
+      noInvoices: "لم يتم العثور على أي فواتير."
+    },
+    cargo: {
+      title: "الشحن",
+      addCargo: "إضافة شحنة",
+      cargoList: "قائمة الشحن",
+      cargoName: "اسم الشحنة",
+      weight: "الوزن",
+      dimensions: "الأبعاد",
+      location: "الموقع",
+      actions: "الإجراءات",
+      viewDetails: "عرض التفاصيل",
+      editCargo: "تعديل الشحن",
+      deleteCargo: "حذف الشحن",
+      confirmDelete: "هل أنت متأكد أنك تريد حذف هذه الشحنة؟",
+      cargoDeleted: "تم حذف الشحن بنجاح!",
+      noCargo: "لم يتم العثور على أي شحن."
+    },
+    reports: {
+      title: "التقارير",
+      generateReport: "إنشاء تقرير",
+      reportType: "نوع التقرير",
+      dateRange: "النطاق الزمني",
+      salesReport: "تقرير المبيعات",
+      shipmentReport: "تقرير الشحن",
+      customerReport: "تقرير العملاء",
+      generate: "إنشاء",
+      download: "تحميل",
+      noReports: "لم يتم إنشاء أي تقارير."
+    },
+    settings: {
+      title: "الإعدادات",
+      save: "حفظ التغييرات",
+      general: "عام",
+      notifications: "الإشعارات",
+      users: "المستخدمون",
+      integrations: "التكاملات",
+      payments: "بوابات الدفع",
+      companyInfo: "معلومات الشركة",
+      companyLogo: "شعار الشركة",
+      uploadLogo: "رفع الشعار",
+      companyName: "اسم الشركة",
+      address: "العنوان",
+      phone: "الهاتف",
+      email: "البريد الإلكتروني",
+      website: "الموقع الإلكتروني",
+      systemPreferences: "تفضيلات النظام",
+      timezone: "المنطقة الزمنية",
+      currency: "العملة",
+      language: "اللغة",
+      dateFormat: "تنسيق التاريخ",
+      emailNotifications: "إشعارات البريد الإلكتروني",
+      smsNotifications: "إشعارات الرسائل النصية",
+      shipmentAlerts: "تنبيهات الشحن",
+      invoiceReminders: "تذكيرات الفواتير",
+      systemUpdates: "تحديثات النظام",
+      mobileAlerts: "التنبيهات المحمولة",
+      enabled: "مفعل",
+      disabled: "معطل",
+      userAccounts: "حسابات المستخدمين",
+      addUser: "إضافة مستخدم",
+      admin: "مدير",
+      manager: "مدير",
+      operator: "مشغل",
+      active: "نشط",
+      inactive: "غير نشط",
+      apiIntegrations: "تكاملات API",
+      paymentGateways: "بوابات الدفع",
+      connected: "متصل",
+      disconnected: "غير متصل",
+      configure: "تكوين"
+    }
   }
 };
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
+  const [language, setLanguage] = React.useState<string>(localStorage.getItem('language') || 'en');
 
-export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('en');
-
-  const t = (key: string): string => {
-    return translations[language][key] || key;
-  };
-
-  useEffect(() => {
-    const html = document.documentElement;
-    if (language === 'ar') {
-      html.setAttribute('dir', 'rtl');
-      html.classList.add('rtl');
-      html.classList.remove('ltr');
-    } else {
-      html.setAttribute('dir', 'ltr');
-      html.classList.add('ltr');
-      html.classList.remove('rtl');
-    }
+  React.useEffect(() => {
+    localStorage.setItem('language', language);
   }, [language]);
+
+  const t = (key: string, params?: { [key: string]: string | number }) =>
+    translate(translations, language, key, params);
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
-};
-
-export const useLanguage = () => {
-  const context = useContext(LanguageContext);
-  if (context === undefined) {
-    throw new Error('useLanguage must be used within a LanguageProvider');
-  }
-  return context;
 };
