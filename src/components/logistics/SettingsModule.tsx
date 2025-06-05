@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { 
   Settings, 
   Bell, 
@@ -14,20 +12,13 @@ import {
   Save,
   Plus,
   Edit,
-  Trash2,
-  Upload,
-  Mail,
-  CreditCard,
-  Ship,
-  FileText
+  Trash2
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useState } from "react";
 
 export const SettingsModule = () => {
   const { t, language } = useLanguage();
   const isRTL = language === 'ar';
-  const [logo, setLogo] = useState<string | null>(null);
 
   const userAccounts = [
     {
@@ -58,65 +49,27 @@ export const SettingsModule = () => {
       name: "Customs API",
       status: "Connected",
       description: "Real-time customs clearance updates",
-      lastSync: "2024-01-10 14:30",
-      icon: FileText,
-      configurable: true
+      lastSync: "2024-01-10 14:30"
     },
     {
       name: "Shipping Lines API",
       status: "Connected", 
       description: "Container tracking and schedules",
-      lastSync: "2024-01-10 14:25",
-      icon: Ship,
-      configurable: true
+      lastSync: "2024-01-10 14:25"
+    },
+    {
+      name: "Payment Gateway",
+      status: "Disconnected",
+      description: "Online payment processing",
+      lastSync: "Never"
     },
     {
       name: "SMS Service",
       status: "Connected",
       description: "SMS notifications and alerts",
-      lastSync: "2024-01-10 14:20",
-      icon: Bell,
-      configurable: true
-    },
-    {
-      name: "Zoho SMTP API",
-      status: "Disconnected",
-      description: "Email delivery service for notifications",
-      lastSync: "Never",
-      icon: Mail,
-      configurable: true
+      lastSync: "2024-01-10 14:20"
     }
   ];
-
-  const paymentGateways = [
-    {
-      name: "PayPal",
-      status: "Disconnected",
-      description: "PayPal payment processing",
-      lastSync: "Never",
-      icon: CreditCard,
-      configurable: true
-    },
-    {
-      name: "Stripe",
-      status: "Disconnected",
-      description: "Credit card and online payments",
-      lastSync: "Never", 
-      icon: CreditCard,
-      configurable: true
-    }
-  ];
-
-  const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setLogo(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   return (
     <div className="space-y-6">
@@ -134,7 +87,6 @@ export const SettingsModule = () => {
           <TabsTrigger value="notifications">{t('settings.notifications')}</TabsTrigger>
           <TabsTrigger value="users">{t('settings.users')}</TabsTrigger>
           <TabsTrigger value="integrations">{t('settings.integrations')}</TabsTrigger>
-          <TabsTrigger value="payments">{t('settings.payments')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="general">
@@ -148,54 +100,28 @@ export const SettingsModule = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label className="text-sm font-medium text-gray-600">{t('settings.companyLogo')}</Label>
-                  <div className="mt-2 space-y-4">
-                    {logo && (
-                      <div className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-                        <img src={logo} alt="Company Logo" className="max-w-full max-h-full object-contain" />
-                      </div>
-                    )}
-                    <div className="flex items-center space-x-2">
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleLogoUpload}
-                        className="hidden"
-                        id="logo-upload"
-                      />
-                      <Button variant="outline" asChild>
-                        <label htmlFor="logo-upload" className="cursor-pointer">
-                          <Upload className="h-4 w-4 mr-2" />
-                          {t('settings.uploadLogo')}
-                        </label>
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-                
-                <div>
-                  <Label className="text-sm font-medium text-gray-600">{t('settings.companyName')}</Label>
+                  <label className="text-sm font-medium text-gray-600">{t('settings.companyName')}</label>
                   <Input defaultValue="LogisCRM Solutions Ltd." />
                 </div>
                 
                 <div>
-                  <Label className="text-sm font-medium text-gray-600">{t('settings.address')}</Label>
-                  <Textarea defaultValue="123 Business District, Logistics City" rows={2} />
+                  <label className="text-sm font-medium text-gray-600">{t('settings.address')}</label>
+                  <Input defaultValue="123 Business District, Logistics City" />
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label className="text-sm font-medium text-gray-600">{t('settings.phone')}</Label>
+                    <label className="text-sm font-medium text-gray-600">{t('settings.phone')}</label>
                     <Input defaultValue="+1-555-0123" />
                   </div>
                   <div>
-                    <Label className="text-sm font-medium text-gray-600">{t('settings.email')}</Label>
+                    <label className="text-sm font-medium text-gray-600">{t('settings.email')}</label>
                     <Input defaultValue="info@logiscrm.com" />
                   </div>
                 </div>
                 
                 <div>
-                  <Label className="text-sm font-medium text-gray-600">{t('settings.website')}</Label>
+                  <label className="text-sm font-medium text-gray-600">{t('settings.website')}</label>
                   <Input defaultValue="https://www.logiscrm.com" />
                 </div>
               </CardContent>
@@ -207,7 +133,7 @@ export const SettingsModule = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label className="text-sm font-medium text-gray-600">{t('settings.timezone')}</Label>
+                  <label className="text-sm font-medium text-gray-600">{t('settings.timezone')}</label>
                   <select className="w-full mt-1 p-2 border rounded-lg">
                     <option>UTC+0 (GMT)</option>
                     <option>UTC-5 (EST)</option>
@@ -217,7 +143,7 @@ export const SettingsModule = () => {
                 </div>
                 
                 <div>
-                  <Label className="text-sm font-medium text-gray-600">{t('settings.currency')}</Label>
+                  <label className="text-sm font-medium text-gray-600">{t('settings.currency')}</label>
                   <select className="w-full mt-1 p-2 border rounded-lg">
                     <option>USD - US Dollar</option>
                     <option>EUR - Euro</option>
@@ -227,7 +153,7 @@ export const SettingsModule = () => {
                 </div>
                 
                 <div>
-                  <Label className="text-sm font-medium text-gray-600">{t('settings.language')}</Label>
+                  <label className="text-sm font-medium text-gray-600">{t('settings.language')}</label>
                   <select className="w-full mt-1 p-2 border rounded-lg">
                     <option>English</option>
                     <option>العربية</option>
@@ -237,7 +163,7 @@ export const SettingsModule = () => {
                 </div>
                 
                 <div>
-                  <Label className="text-sm font-medium text-gray-600">{t('settings.dateFormat')}</Label>
+                  <label className="text-sm font-medium text-gray-600">{t('settings.dateFormat')}</label>
                   <select className="w-full mt-1 p-2 border rounded-lg">
                     <option>MM/DD/YYYY</option>
                     <option>DD/MM/YYYY</option>
@@ -386,7 +312,7 @@ export const SettingsModule = () => {
                   <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
                     <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
                       <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                        <integration.icon className="h-5 w-5 text-gray-600" />
+                        <Zap className="h-5 w-5 text-gray-600" />
                       </div>
                       <div>
                         <p className="font-medium">{integration.name}</p>
@@ -397,43 +323,6 @@ export const SettingsModule = () => {
                     <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
                       <Badge className={integration.status === "Connected" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
                         {t(`settings.${integration.status.toLowerCase()}`)}
-                      </Badge>
-                      <Button variant="outline" size="sm">
-                        {t('settings.configure')}
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="payments">
-          <Card>
-            <CardHeader>
-              <CardTitle className={`flex items-center ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
-                <CreditCard className="h-5 w-5 text-blue-600" />
-                <span>{t('settings.paymentGateways')}</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {paymentGateways.map((gateway, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
-                      <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                        <gateway.icon className="h-5 w-5 text-gray-600" />
-                      </div>
-                      <div>
-                        <p className="font-medium">{gateway.name}</p>
-                        <p className="text-sm text-gray-600">{gateway.description}</p>
-                        <p className="text-xs text-gray-500">Last sync: {gateway.lastSync}</p>
-                      </div>
-                    </div>
-                    <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
-                      <Badge className={gateway.status === "Connected" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}>
-                        {t(`settings.${gateway.status.toLowerCase()}`)}
                       </Badge>
                       <Button variant="outline" size="sm">
                         {t('settings.configure')}
