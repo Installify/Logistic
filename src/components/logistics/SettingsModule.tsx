@@ -38,8 +38,46 @@ const defaultSettings = {
   timezone: "UTC+0 (GMT)",
   currency: "USD - US Dollar",
   dateFormat: "MM/DD/YYYY",
-  logo: null as File | null
+  logoUrl: null as string | null
 };
+
+// Comprehensive timezone list
+const timezones = [
+  "UTC-12:00 (International Date Line West)",
+  "UTC-11:00 (Coordinated Universal Time-11)",
+  "UTC-10:00 (Hawaii)",
+  "UTC-09:00 (Alaska)",
+  "UTC-08:00 (Pacific Time US & Canada)",
+  "UTC-07:00 (Mountain Time US & Canada)",
+  "UTC-06:00 (Central Time US & Canada)",
+  "UTC-05:00 (Eastern Time US & Canada)",
+  "UTC-04:00 (Atlantic Time Canada)",
+  "UTC-03:30 (Newfoundland)",
+  "UTC-03:00 (Brazil, Argentina)",
+  "UTC-02:00 (Coordinated Universal Time-02)",
+  "UTC-01:00 (Azores)",
+  "UTC+0 (GMT, London, Dublin)",
+  "UTC+1 (Central European Time)",
+  "UTC+2 (Eastern European Time)",
+  "UTC+3 (Moscow, Kuwait, Riyadh)",
+  "UTC+3:30 (Tehran)",
+  "UTC+4 (Abu Dhabi, Muscat)",
+  "UTC+4:30 (Afghanistan)",
+  "UTC+5 (Pakistan, Kazakhstan)",
+  "UTC+5:30 (India, Sri Lanka)",
+  "UTC+5:45 (Nepal)",
+  "UTC+6 (Bangladesh, Kazakhstan)",
+  "UTC+6:30 (Myanmar)",
+  "UTC+7 (Bangkok, Jakarta)",
+  "UTC+8 (China, Singapore, Malaysia)",
+  "UTC+9 (Japan, Korea)",
+  "UTC+9:30 (Adelaide, Darwin)",
+  "UTC+10 (Eastern Australia)",
+  "UTC+11 (Solomon Islands, New Caledonia)",
+  "UTC+12 (Fiji, New Zealand)",
+  "UTC+13 (Tonga)",
+  "UTC+14 (Line Islands)"
+];
 
 export const SettingsModule = () => {
   const { t, language } = useLanguage();
@@ -131,7 +169,13 @@ export const SettingsModule = () => {
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setFormData(prev => ({ ...prev, logo: file }));
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        setFormData(prev => ({ ...prev, logoUrl: result }));
+        console.log('Logo uploaded and preview updated');
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -141,11 +185,7 @@ export const SettingsModule = () => {
 
   const handleSaveChanges = () => {
     try {
-      // Save settings to localStorage (excluding the logo file which can't be serialized)
-      const settingsToSave = { ...formData };
-      delete settingsToSave.logo; // Remove logo file for localStorage
-      
-      localStorage.setItem('logiscrm-settings', JSON.stringify(settingsToSave));
+      localStorage.setItem('logiscrm-settings', JSON.stringify(formData));
       
       console.log('Settings saved successfully:', formData);
       
@@ -321,9 +361,13 @@ export const SettingsModule = () => {
                   <label className="text-sm font-medium text-gray-600">{t('settings.logo')}</label>
                   <div className="mt-2 space-y-2">
                     <div className="flex items-center space-x-2">
-                      <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
-                        {formData.logo ? (
-                          <Image className="h-8 w-8 text-blue-600" />
+                      <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300 overflow-hidden">
+                        {formData.logoUrl ? (
+                          <img 
+                            src={formData.logoUrl} 
+                            alt="Company Logo" 
+                            className="w-full h-full object-cover"
+                          />
                         ) : (
                           <Upload className="h-8 w-8 text-gray-400" />
                         )}
@@ -344,8 +388,8 @@ export const SettingsModule = () => {
                             </span>
                           </Button>
                         </label>
-                        {formData.logo && (
-                          <p className="text-xs text-gray-600 mt-1">{formData.logo.name}</p>
+                        {formData.logoUrl && (
+                          <p className="text-xs text-gray-600 mt-1">Logo uploaded successfully</p>
                         )}
                       </div>
                     </div>
@@ -407,10 +451,9 @@ export const SettingsModule = () => {
                     value={formData.timezone}
                     onChange={(e) => handleInputChange('timezone', e.target.value)}
                   >
-                    <option>UTC+0 (GMT)</option>
-                    <option>UTC-5 (EST)</option>
-                    <option>UTC+1 (CET)</option>
-                    <option>UTC+3 (AST)</option>
+                    {timezones.map((tz) => (
+                      <option key={tz} value={tz}>{tz}</option>
+                    ))}
                   </select>
                 </div>
                 
@@ -426,6 +469,10 @@ export const SettingsModule = () => {
                     <option>GBP - British Pound</option>
                     <option>AED - UAE Dirham</option>
                     <option>SAR - Saudi Riyal</option>
+                    <option>QAR - Qatari Riyal</option>
+                    <option>KWD - Kuwaiti Dinar</option>
+                    <option>JPY - Japanese Yen</option>
+                    <option>CNY - Chinese Yuan</option>
                   </select>
                 </div>
                 

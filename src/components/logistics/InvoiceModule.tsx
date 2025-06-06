@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,14 +18,22 @@ import {
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export const InvoiceModule = () => {
-  const { t, language } = useLanguage();
+  const { t, language, currency, convertCurrency } = useLanguage();
   const isRTL = language === 'ar';
 
-  const invoices = [
+  const [displayCurrency, setDisplayCurrency] = useState(currency);
+
+  // Update display currency when settings currency changes
+  useEffect(() => {
+    setDisplayCurrency(currency);
+  }, [currency]);
+
+  const baseInvoices = [
     {
       id: "INV-2024-001",
       customer: "Global Trade Co.",
-      amount: "$45,000",
+      amount: 45000,
+      baseCurrency: "USD",
       status: "Paid",
       issueDate: "2024-01-05",
       dueDate: "2024-01-20",
@@ -35,7 +43,8 @@ export const InvoiceModule = () => {
     {
       id: "INV-2024-002",
       customer: "Euro Logistics",
-      amount: "$78,000",
+      amount: 78000,
+      baseCurrency: "USD",
       status: "Pending",
       issueDate: "2024-01-08",
       dueDate: "2024-01-23",
@@ -45,7 +54,8 @@ export const InvoiceModule = () => {
     {
       id: "INV-2024-003",
       customer: "Ocean Freight Ltd",
-      amount: "$32,000",
+      amount: 32000,
+      baseCurrency: "USD",
       status: "Overdue",
       issueDate: "2023-12-20",
       dueDate: "2024-01-04",
@@ -53,6 +63,39 @@ export const InvoiceModule = () => {
       items: ["Sea Freight", "Port Charges", "THC"]
     }
   ];
+
+  // Convert invoice amounts to display currency
+  const invoices = baseInvoices.map(invoice => ({
+    ...invoice,
+    displayAmount: convertCurrency(invoice.amount, invoice.baseCurrency, displayCurrency),
+    displayCurrency
+  }));
+
+  // Calculate totals in display currency
+  const totalPending = invoices
+    .filter(inv => inv.status === "Pending")
+    .reduce((sum, inv) => sum + inv.displayAmount, 0);
+
+  const totalOverdue = invoices
+    .filter(inv => inv.status === "Overdue")
+    .reduce((sum, inv) => sum + inv.displayAmount, 0);
+
+  const formatCurrency = (amount: number) => {
+    const currencySymbols: { [key: string]: string } = {
+      'USD': '$',
+      'EUR': '€',
+      'GBP': '£',
+      'AED': 'د.إ',
+      'SAR': '﷼',
+      'QAR': '﷼',
+      'KWD': 'د.ك',
+      'JPY': '¥',
+      'CNY': '¥'
+    };
+    
+    const symbol = currencySymbols[displayCurrency] || displayCurrency;
+    return `${symbol}${amount.toLocaleString()}`;
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -108,7 +151,7 @@ export const InvoiceModule = () => {
             <Clock className="h-4 w-4 text-yellow-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$127,800</div>
+            <div className="text-2xl font-bold">{formatCurrency(totalPending)}</div>
             <p className="text-xs text-yellow-600 mt-1">12 {t('invoices.all')}</p>
           </CardContent>
         </Card>
@@ -119,7 +162,7 @@ export const InvoiceModule = () => {
             <div className="w-4 h-4 bg-red-500 rounded-full" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$45,200</div>
+            <div className="text-2xl font-bold">{formatCurrency(totalOverdue)}</div>
             <p className="text-xs text-red-600 mt-1">5 {t('invoices.all')}</p>
           </CardContent>
         </Card>
@@ -177,7 +220,7 @@ export const InvoiceModule = () => {
                     </div>
                   </div>
                   <div className={isRTL ? 'text-left' : 'text-right'}>
-                    <p className="font-semibold text-xl">{invoice.amount}</p>
+                    <p className="font-semibold text-xl">{formatCurrency(invoice.displayAmount)}</p>
                     <p className="text-sm text-gray-600">Due: {invoice.dueDate}</p>
                   </div>
                 </div>
