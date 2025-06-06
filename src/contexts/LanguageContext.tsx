@@ -41,6 +41,24 @@ const translations = {
     'sidebar.footer': 'Version 2.1.0',
     'sidebar.status': 'Online',
 
+    // Dashboard translations
+    'dashboard.title': 'Dashboard',
+    'dashboard.exportReport': 'Export Report',
+    'dashboard.newShipment': 'New Shipment',
+    'dashboard.activeShipments': 'Active Shipments',
+    'dashboard.totalCustomers': 'Total Customers',
+    'dashboard.monthlyRevenue': 'Monthly Revenue',
+    'dashboard.growthRate': 'Growth Rate',
+    'dashboard.fromLastMonth': 'from last month',
+    'dashboard.recentShipments': 'Recent Shipments',
+    'dashboard.alertsNotifications': 'Alerts & Notifications',
+    'dashboard.shipmentDelayed': 'Shipment SH003 delayed',
+    'dashboard.delayReason': 'Weather conditions at origin port',
+    'dashboard.invoiceOverdue': 'Invoice #INV-2024-001 overdue',
+    'dashboard.paymentPending': 'Payment pending for 5 days',
+    'dashboard.newCustomer': 'New customer registration',
+    'dashboard.customerVerification': 'Requires verification and approval',
+
     // Invoice translations
     'invoices.title': 'Invoice Management',
     'invoices.create': 'Create Invoice',
@@ -91,6 +109,10 @@ const translations = {
     'status.pending': 'Pending',
     'status.overdue': 'Overdue',
     'status.draft': 'Draft',
+    'status.intransit': 'In Transit',
+    'status.delivered': 'Delivered',
+    'status.loading': 'Loading',
+    'status.customs': 'Customs',
   },
   ar: {
     // Arabic translations (existing ones)
@@ -106,6 +128,24 @@ const translations = {
     'sidebar.settings': 'الإعدادات',
     'sidebar.footer': 'الإصدار 2.1.0',
     'sidebar.status': 'متصل',
+
+    // Dashboard translations in Arabic
+    'dashboard.title': 'لوحة القيادة',
+    'dashboard.exportReport': 'تصدير التقرير',
+    'dashboard.newShipment': 'شحنة جديدة',
+    'dashboard.activeShipments': 'الشحنات النشطة',
+    'dashboard.totalCustomers': 'إجمالي العملاء',
+    'dashboard.monthlyRevenue': 'الإيرادات الشهرية',
+    'dashboard.growthRate': 'معدل النمو',
+    'dashboard.fromLastMonth': 'من الشهر الماضي',
+    'dashboard.recentShipments': 'الشحنات الأخيرة',
+    'dashboard.alertsNotifications': 'التنبيهات والإشعارات',
+    'dashboard.shipmentDelayed': 'تأخر الشحنة SH003',
+    'dashboard.delayReason': 'الأحوال الجوية في ميناء المنشأ',
+    'dashboard.invoiceOverdue': 'الفاتورة #INV-2024-001 متأخرة',
+    'dashboard.paymentPending': 'الدفع معلق لمدة 5 أيام',
+    'dashboard.newCustomer': 'تسجيل عميل جديد',
+    'dashboard.customerVerification': 'يتطلب التحقق والموافقة',
 
     'invoices.title': 'إدارة الفواتير',
     'invoices.create': 'إنشاء فاتورة',
@@ -154,6 +194,10 @@ const translations = {
     'status.pending': 'معلق',
     'status.overdue': 'متأخر',
     'status.draft': 'مسودة',
+    'status.intransit': 'في الطريق',
+    'status.delivered': 'تم التسليم',
+    'status.loading': 'جاري التحميل',
+    'status.customs': 'الجمارك',
   }
 };
 

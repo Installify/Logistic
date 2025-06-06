@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Sidebar } from "@/components/logistics/Sidebar";
 import { Dashboard } from "@/components/logistics/Dashboard";
 import { ShipmentModule } from "@/components/logistics/ShipmentModule";
@@ -10,9 +10,16 @@ import { CargoModule } from "@/components/logistics/CargoModule";
 import { ReportsModule } from "@/components/logistics/ReportsModule";
 import { SettingsModule } from "@/components/logistics/SettingsModule";
 import { Header } from "@/components/logistics/Header";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
   const [activeModule, setActiveModule] = useState("dashboard");
+  const { language } = useLanguage();
+
+  // Set document direction based on language
+  useEffect(() => {
+    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+  }, [language]);
 
   const renderActiveModule = () => {
     switch (activeModule) {
