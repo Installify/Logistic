@@ -17,7 +17,7 @@ import {
   Image
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Sheet, 
   SheetContent, 
@@ -28,22 +28,38 @@ import {
 } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
 
+// Default settings that will be used if no saved settings exist
+const defaultSettings = {
+  companyName: "LogisCRM Solutions Ltd.",
+  address: "123 Business District, Logistics City",
+  phone: "+1-555-0123",
+  email: "info@logiscrm.com",
+  website: "https://www.logiscrm.com",
+  timezone: "UTC+0 (GMT)",
+  currency: "USD - US Dollar",
+  dateFormat: "MM/DD/YYYY",
+  logo: null as File | null
+};
+
 export const SettingsModule = () => {
   const { t, language } = useLanguage();
   const { toast } = useToast();
   const isRTL = language === 'ar';
   const [selectedIntegration, setSelectedIntegration] = useState(null);
-  const [formData, setFormData] = useState({
-    companyName: "LogisCRM Solutions Ltd.",
-    address: "123 Business District, Logistics City",
-    phone: "+1-555-0123",
-    email: "info@logiscrm.com",
-    website: "https://www.logiscrm.com",
-    timezone: "UTC+0 (GMT)",
-    currency: "USD - US Dollar",
-    dateFormat: "MM/DD/YYYY",
-    logo: null as File | null
-  });
+  const [formData, setFormData] = useState(defaultSettings);
+
+  // Load saved settings from localStorage on component mount
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('logiscrm-settings');
+    if (savedSettings) {
+      try {
+        const parsed = JSON.parse(savedSettings);
+        setFormData(prev => ({ ...prev, ...parsed }));
+      } catch (error) {
+        console.error('Error loading saved settings:', error);
+      }
+    }
+  }, []);
 
   const userAccounts = [
     {
@@ -124,13 +140,27 @@ export const SettingsModule = () => {
   };
 
   const handleSaveChanges = () => {
-    // Here you would typically send the data to your backend
-    console.log('Saving settings:', formData);
-    
-    toast({
-      title: t('settings.saveSuccess'),
-      description: t('settings.saveSuccessMessage'),
-    });
+    try {
+      // Save settings to localStorage (excluding the logo file which can't be serialized)
+      const settingsToSave = { ...formData };
+      delete settingsToSave.logo; // Remove logo file for localStorage
+      
+      localStorage.setItem('logiscrm-settings', JSON.stringify(settingsToSave));
+      
+      console.log('Settings saved successfully:', formData);
+      
+      toast({
+        title: t('settings.saveSuccess'),
+        description: t('settings.saveSuccessMessage'),
+      });
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save settings. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   const renderConfigurationForm = (integration) => {
