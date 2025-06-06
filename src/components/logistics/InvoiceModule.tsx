@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,15 +17,26 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+// Currency conversion rates (in real app, this would come from an API)
+const currencyRates = {
+  "USD - US Dollar": { symbol: "$", rate: 1 },
+  "EUR - Euro": { symbol: "€", rate: 0.85 },
+  "GBP - British Pound": { symbol: "£", rate: 0.73 },
+  "AED - UAE Dirham": { symbol: "د.إ", rate: 3.67 },
+  "SAR - Saudi Riyal": { symbol: "ر.س", rate: 3.75 }
+};
+
 export const InvoiceModule = () => {
   const { t, language } = useLanguage();
   const isRTL = language === 'ar';
+  const [currentCurrency, setCurrentCurrency] = useState("USD - US Dollar");
 
-  const invoices = [
+  // Base invoice data in USD
+  const baseInvoices = [
     {
       id: "INV-2024-001",
       customer: "Global Trade Co.",
-      amount: "$45,000",
+      baseAmount: 45000,
       status: "Paid",
       issueDate: "2024-01-05",
       dueDate: "2024-01-20",
@@ -35,7 +46,7 @@ export const InvoiceModule = () => {
     {
       id: "INV-2024-002",
       customer: "Euro Logistics",
-      amount: "$78,000",
+      baseAmount: 78000,
       status: "Pending",
       issueDate: "2024-01-08",
       dueDate: "2024-01-23",
@@ -45,7 +56,7 @@ export const InvoiceModule = () => {
     {
       id: "INV-2024-003",
       customer: "Ocean Freight Ltd",
-      amount: "$32,000",
+      baseAmount: 32000,
       status: "Overdue",
       issueDate: "2023-12-20",
       dueDate: "2024-01-04",
@@ -53,6 +64,51 @@ export const InvoiceModule = () => {
       items: ["Sea Freight", "Port Charges", "THC"]
     }
   ];
+
+  // Load currency from localStorage on mount
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('logiscrm-settings');
+    if (savedSettings) {
+      try {
+        const parsed = JSON.parse(savedSettings);
+        if (parsed.currency) {
+          setCurrentCurrency(parsed.currency);
+        }
+      } catch (error) {
+        console.error('Error loading currency settings:', error);
+      }
+    }
+  }, []);
+
+  // Listen for currency changes from settings
+  useEffect(() => {
+    const handleCurrencyChange = (event: CustomEvent) => {
+      setCurrentCurrency(event.detail.currency);
+    };
+
+    window.addEventListener('currencyChanged', handleCurrencyChange as EventListener);
+    return () => {
+      window.removeEventListener('currencyChanged', handleCurrencyChange as EventListener);
+    };
+  }, []);
+
+  // Convert amount to current currency
+  const convertAmount = (baseAmount: number) => {
+    const currency = currencyRates[currentCurrency] || currencyRates["USD - US Dollar"];
+    const convertedAmount = baseAmount * currency.rate;
+    return `${currency.symbol}${convertedAmount.toLocaleString()}`;
+  };
+
+  // Convert invoices with current currency
+  const invoices = baseInvoices.map(invoice => ({
+    ...invoice,
+    amount: convertAmount(invoice.baseAmount)
+  }));
+
+  // Convert statistics
+  const totalInvoicesAmount = 155000; // Sum of base amounts
+  const pendingAmount = 110000; // Sum of pending amounts in base currency
+  const overdueAmount = 32000; // Sum of overdue amounts in base currency
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -78,6 +134,9 @@ export const InvoiceModule = () => {
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-bold text-gray-900">{t('invoices.title')}</h2>
         <div className={`flex ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
+          <div className="text-sm text-gray-600">
+            {t('invoices.currency')}: {currentCurrency}
+          </div>
           <Button variant="outline">
             <Download className="h-4 w-4 mr-2" />
             {t('invoices.bulkExport')}
@@ -108,7 +167,7 @@ export const InvoiceModule = () => {
             <Clock className="h-4 w-4 text-yellow-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$127,800</div>
+            <div className="text-2xl font-bold">{convertAmount(pendingAmount)}</div>
             <p className="text-xs text-yellow-600 mt-1">12 {t('invoices.all')}</p>
           </CardContent>
         </Card>
@@ -119,7 +178,7 @@ export const InvoiceModule = () => {
             <div className="w-4 h-4 bg-red-500 rounded-full" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$45,200</div>
+            <div className="text-2xl font-bold">{convertAmount(overdueAmount)}</div>
             <p className="text-xs text-red-600 mt-1">5 {t('invoices.all')}</p>
           </CardContent>
         </Card>

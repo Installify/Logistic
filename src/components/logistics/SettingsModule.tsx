@@ -38,8 +38,39 @@ const defaultSettings = {
   timezone: "UTC+0 (GMT)",
   currency: "USD - US Dollar",
   dateFormat: "MM/DD/YYYY",
-  logo: null as File | null
+  logo: null as File | null,
+  logoPreview: null as string | null
 };
+
+// Comprehensive timezone options
+const timezones = [
+  "UTC-12:00 (Baker Island)",
+  "UTC-11:00 (American Samoa)",
+  "UTC-10:00 (Hawaii)",
+  "UTC-09:00 (Alaska)",
+  "UTC-08:00 (Pacific Time)",
+  "UTC-07:00 (Mountain Time)",
+  "UTC-06:00 (Central Time)",
+  "UTC-05:00 (Eastern Time)",
+  "UTC-04:00 (Atlantic Time)",
+  "UTC-03:00 (Brazil)",
+  "UTC-02:00 (South Georgia)",
+  "UTC-01:00 (Azores)",
+  "UTC+0 (GMT)",
+  "UTC+01:00 (Central European Time)",
+  "UTC+02:00 (Eastern European Time)",
+  "UTC+03:00 (Arabia Standard Time)",
+  "UTC+04:00 (Gulf Standard Time)",
+  "UTC+05:00 (Pakistan Standard Time)",
+  "UTC+05:30 (India Standard Time)",
+  "UTC+06:00 (Bangladesh Standard Time)",
+  "UTC+07:00 (Indochina Time)",
+  "UTC+08:00 (China Standard Time)",
+  "UTC+09:00 (Japan Standard Time)",
+  "UTC+10:00 (Australian Eastern Time)",
+  "UTC+11:00 (Solomon Islands Time)",
+  "UTC+12:00 (New Zealand Standard Time)"
+];
 
 export const SettingsModule = () => {
   const { t, language } = useLanguage();
@@ -60,6 +91,21 @@ export const SettingsModule = () => {
       }
     }
   }, []);
+
+  // Save settings to localStorage whenever currency changes
+  useEffect(() => {
+    const settingsToSave = { ...formData };
+    delete settingsToSave.logo;
+    delete settingsToSave.logoPreview;
+    localStorage.setItem('logiscrm-settings', JSON.stringify(settingsToSave));
+    
+    // Dispatch custom event for currency change
+    if (formData.currency !== defaultSettings.currency) {
+      window.dispatchEvent(new CustomEvent('currencyChanged', { 
+        detail: { currency: formData.currency } 
+      }));
+    }
+  }, [formData.currency]);
 
   const userAccounts = [
     {
@@ -131,7 +177,14 @@ export const SettingsModule = () => {
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setFormData(prev => ({ ...prev, logo: file }));
+      // Create preview URL
+      const previewUrl = URL.createObjectURL(file);
+      setFormData(prev => ({ 
+        ...prev, 
+        logo: file,
+        logoPreview: previewUrl
+      }));
+      console.log('Logo uploaded:', file.name);
     }
   };
 
@@ -143,7 +196,8 @@ export const SettingsModule = () => {
     try {
       // Save settings to localStorage (excluding the logo file which can't be serialized)
       const settingsToSave = { ...formData };
-      delete settingsToSave.logo; // Remove logo file for localStorage
+      delete settingsToSave.logo;
+      delete settingsToSave.logoPreview;
       
       localStorage.setItem('logiscrm-settings', JSON.stringify(settingsToSave));
       
@@ -321,9 +375,13 @@ export const SettingsModule = () => {
                   <label className="text-sm font-medium text-gray-600">{t('settings.logo')}</label>
                   <div className="mt-2 space-y-2">
                     <div className="flex items-center space-x-2">
-                      <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
-                        {formData.logo ? (
-                          <Image className="h-8 w-8 text-blue-600" />
+                      <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300 overflow-hidden">
+                        {formData.logoPreview ? (
+                          <img 
+                            src={formData.logoPreview} 
+                            alt="Logo preview" 
+                            className="w-full h-full object-cover"
+                          />
                         ) : (
                           <Upload className="h-8 w-8 text-gray-400" />
                         )}
@@ -407,10 +465,9 @@ export const SettingsModule = () => {
                     value={formData.timezone}
                     onChange={(e) => handleInputChange('timezone', e.target.value)}
                   >
-                    <option>UTC+0 (GMT)</option>
-                    <option>UTC-5 (EST)</option>
-                    <option>UTC+1 (CET)</option>
-                    <option>UTC+3 (AST)</option>
+                    {timezones.map((tz) => (
+                      <option key={tz} value={tz}>{tz}</option>
+                    ))}
                   </select>
                 </div>
                 
