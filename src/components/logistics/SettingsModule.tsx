@@ -12,7 +12,9 @@ import {
   Plus,
   Edit,
   Trash2,
-  Mail
+  Mail,
+  Upload,
+  Image
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState } from "react";
@@ -24,11 +26,24 @@ import {
   SheetTitle, 
   SheetTrigger 
 } from "@/components/ui/sheet";
+import { useToast } from "@/hooks/use-toast";
 
 export const SettingsModule = () => {
   const { t, language } = useLanguage();
+  const { toast } = useToast();
   const isRTL = language === 'ar';
   const [selectedIntegration, setSelectedIntegration] = useState(null);
+  const [formData, setFormData] = useState({
+    companyName: "LogisCRM Solutions Ltd.",
+    address: "123 Business District, Logistics City",
+    phone: "+1-555-0123",
+    email: "info@logiscrm.com",
+    website: "https://www.logiscrm.com",
+    timezone: "UTC+0 (GMT)",
+    currency: "USD - US Dollar",
+    dateFormat: "MM/DD/YYYY",
+    logo: null as File | null
+  });
 
   const userAccounts = [
     {
@@ -96,6 +111,27 @@ export const SettingsModule = () => {
       configurable: true
     }
   ];
+
+  const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setFormData(prev => ({ ...prev, logo: file }));
+    }
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSaveChanges = () => {
+    // Here you would typically send the data to your backend
+    console.log('Saving settings:', formData);
+    
+    toast({
+      title: t('settings.saveSuccess'),
+      description: t('settings.saveSuccessMessage'),
+    });
+  };
 
   const renderConfigurationForm = (integration) => {
     switch (integration.name) {
@@ -227,7 +263,7 @@ export const SettingsModule = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-bold text-gray-900">{t('settings.title')}</h2>
-        <Button>
+        <Button onClick={handleSaveChanges}>
           <Save className="h-4 w-4 mr-2" />
           {t('settings.save')}
         </Button>
@@ -252,29 +288,79 @@ export const SettingsModule = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
+                  <label className="text-sm font-medium text-gray-600">{t('settings.logo')}</label>
+                  <div className="mt-2 space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
+                        {formData.logo ? (
+                          <Image className="h-8 w-8 text-blue-600" />
+                        ) : (
+                          <Upload className="h-8 w-8 text-gray-400" />
+                        )}
+                      </div>
+                      <div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleLogoUpload}
+                          className="hidden"
+                          id="logo-upload"
+                        />
+                        <label htmlFor="logo-upload">
+                          <Button variant="outline" className="cursor-pointer" asChild>
+                            <span>
+                              <Upload className="h-4 w-4 mr-2" />
+                              {t('settings.uploadLogo')}
+                            </span>
+                          </Button>
+                        </label>
+                        {formData.logo && (
+                          <p className="text-xs text-gray-600 mt-1">{formData.logo.name}</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
                   <label className="text-sm font-medium text-gray-600">{t('settings.companyName')}</label>
-                  <Input defaultValue="LogisCRM Solutions Ltd." />
+                  <Input 
+                    value={formData.companyName}
+                    onChange={(e) => handleInputChange('companyName', e.target.value)}
+                  />
                 </div>
                 
                 <div>
                   <label className="text-sm font-medium text-gray-600">{t('settings.address')}</label>
-                  <Input defaultValue="123 Business District, Logistics City" />
+                  <Input 
+                    value={formData.address}
+                    onChange={(e) => handleInputChange('address', e.target.value)}
+                  />
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="text-sm font-medium text-gray-600">{t('settings.phone')}</label>
-                    <Input defaultValue="+1-555-0123" />
+                    <Input 
+                      value={formData.phone}
+                      onChange={(e) => handleInputChange('phone', e.target.value)}
+                    />
                   </div>
                   <div>
                     <label className="text-sm font-medium text-gray-600">{t('settings.email')}</label>
-                    <Input defaultValue="info@logiscrm.com" />
+                    <Input 
+                      value={formData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                    />
                   </div>
                 </div>
                 
                 <div>
                   <label className="text-sm font-medium text-gray-600">{t('settings.website')}</label>
-                  <Input defaultValue="https://www.logiscrm.com" />
+                  <Input 
+                    value={formData.website}
+                    onChange={(e) => handleInputChange('website', e.target.value)}
+                  />
                 </div>
               </CardContent>
             </Card>
@@ -286,7 +372,11 @@ export const SettingsModule = () => {
               <CardContent className="space-y-4">
                 <div>
                   <label className="text-sm font-medium text-gray-600">{t('settings.timezone')}</label>
-                  <select className="w-full mt-1 p-2 border rounded-lg">
+                  <select 
+                    className="w-full mt-1 p-2 border rounded-lg"
+                    value={formData.timezone}
+                    onChange={(e) => handleInputChange('timezone', e.target.value)}
+                  >
                     <option>UTC+0 (GMT)</option>
                     <option>UTC-5 (EST)</option>
                     <option>UTC+1 (CET)</option>
@@ -296,27 +386,26 @@ export const SettingsModule = () => {
                 
                 <div>
                   <label className="text-sm font-medium text-gray-600">{t('settings.currency')}</label>
-                  <select className="w-full mt-1 p-2 border rounded-lg">
+                  <select 
+                    className="w-full mt-1 p-2 border rounded-lg"
+                    value={formData.currency}
+                    onChange={(e) => handleInputChange('currency', e.target.value)}
+                  >
                     <option>USD - US Dollar</option>
                     <option>EUR - Euro</option>
                     <option>GBP - British Pound</option>
                     <option>AED - UAE Dirham</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="text-sm font-medium text-gray-600">{t('settings.language')}</label>
-                  <select className="w-full mt-1 p-2 border rounded-lg">
-                    <option>English</option>
-                    <option>العربية</option>
-                    <option>Français</option>
-                    <option>Español</option>
+                    <option>SAR - Saudi Riyal</option>
                   </select>
                 </div>
                 
                 <div>
                   <label className="text-sm font-medium text-gray-600">{t('settings.dateFormat')}</label>
-                  <select className="w-full mt-1 p-2 border rounded-lg">
+                  <select 
+                    className="w-full mt-1 p-2 border rounded-lg"
+                    value={formData.dateFormat}
+                    onChange={(e) => handleInputChange('dateFormat', e.target.value)}
+                  >
                     <option>MM/DD/YYYY</option>
                     <option>DD/MM/YYYY</option>
                     <option>YYYY-MM-DD</option>
