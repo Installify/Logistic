@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface LanguageContextType {
@@ -40,6 +39,11 @@ const translations = {
     'sidebar.settings': 'Settings',
     'sidebar.footer': 'Version 2.1.0',
     'sidebar.status': 'Online',
+
+    // Header translations
+    'header.title': 'LogisCRM',
+    'header.search': 'Search...',
+    'header.profile': 'Profile',
 
     // Dashboard translations
     'dashboard.title': 'Dashboard',
@@ -128,6 +132,11 @@ const translations = {
     'sidebar.settings': 'الإعدادات',
     'sidebar.footer': 'الإصدار 2.1.0',
     'sidebar.status': 'متصل',
+
+    // Header translations in Arabic
+    'header.title': 'نظام اللوجستيات',
+    'header.search': 'البحث...',
+    'header.profile': 'الملف الشخصي',
 
     // Dashboard translations in Arabic
     'dashboard.title': 'لوحة القيادة',

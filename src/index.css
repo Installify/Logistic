@@ -109,19 +109,6 @@
     direction: ltr;
   }
 
-  /* Enhanced RTL flex support */
-  [dir="rtl"] .flex {
-    flex-direction: row-reverse;
-  }
-
-  [dir="rtl"] .flex-row {
-    flex-direction: row-reverse;
-  }
-
-  [dir="rtl"] .flex-col {
-    flex-direction: column;
-  }
-
   /* RTL spacing fixes */
   [dir="rtl"] .space-x-4 > :not([hidden]) ~ :not([hidden]) {
     --tw-space-x-reverse: 1;

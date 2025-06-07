@@ -15,6 +15,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const Index = () => {
   const [activeModule, setActiveModule] = useState("dashboard");
   const { language } = useLanguage();
+  const isRTL = language === 'ar';
 
   // Set document direction based on language
   useEffect(() => {
@@ -45,7 +46,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className={`min-h-screen bg-gray-50 flex ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
       <Sidebar activeModule={activeModule} setActiveModule={setActiveModule} />
       <div className="flex-1 flex flex-col">
         <Header />
