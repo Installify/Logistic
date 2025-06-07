@@ -34,12 +34,12 @@ export const Sidebar = ({ activeModule, setActiveModule }: SidebarProps) => {
 
   return (
     <div className="w-64 bg-slate-900 text-white flex flex-col">
-      <div className="p-6 border-b border-slate-800">
+      <div className={`p-6 border-b border-slate-800`}>
         <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
           <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
             <Truck className="h-6 w-6 text-white" />
           </div>
-          <div>
+          <div className={isRTL ? 'text-right' : 'text-left'}>
             <h2 className="text-xl font-bold">{t('sidebar.title')}</h2>
             <p className="text-slate-400 text-sm">{t('sidebar.subtitle')}</p>
           </div>
@@ -70,7 +70,7 @@ export const Sidebar = ({ activeModule, setActiveModule }: SidebarProps) => {
         </ul>
       </nav>
       
-      <div className="p-4 border-t border-slate-800">
+      <div className={`p-4 border-t border-slate-800 ${isRTL ? 'text-right' : 'text-left'}`}>
         <div className="text-xs text-slate-400">
           <p>{t('sidebar.footer')}</p>
           <p className="text-green-400 mt-1">● {t('sidebar.status')}</p>

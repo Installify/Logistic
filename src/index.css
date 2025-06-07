@@ -158,6 +158,36 @@
     padding-left: 2.5rem;
   }
 
+  [dir="rtl"] .pl-6 {
+    padding-left: 0;
+    padding-right: 1.5rem;
+  }
+
+  [dir="rtl"] .pr-6 {
+    padding-right: 0;
+    padding-left: 1.5rem;
+  }
+
+  [dir="rtl"] .ml-2 {
+    margin-left: 0;
+    margin-right: 0.5rem;
+  }
+
+  [dir="rtl"] .mr-2 {
+    margin-right: 0;
+    margin-left: 0.5rem;
+  }
+
+  [dir="rtl"] .ml-4 {
+    margin-left: 0;
+    margin-right: 1rem;
+  }
+
+  [dir="rtl"] .mr-4 {
+    margin-right: 0;
+    margin-left: 1rem;
+  }
+
   /* Border radius in RTL */
   [dir="rtl"] .rounded-l {
     border-top-left-radius: 0;
@@ -171,5 +201,19 @@
     border-bottom-right-radius: 0;
     border-top-left-radius: 0.25rem;
     border-bottom-left-radius: 0.25rem;
+  }
+
+  /* RTL flex direction fixes */
+  [dir="rtl"] .flex-row-reverse {
+    flex-direction: row;
+  }
+
+  [dir="rtl"] .flex-row {
+    flex-direction: row-reverse;
+  }
+
+  /* Ensure icons and text maintain proper spacing in RTL */
+  [dir="rtl"] .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 1;
   }
 }
