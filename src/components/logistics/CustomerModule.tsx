@@ -54,7 +54,7 @@ export const CustomerModule = () => {
         <h2 className="text-3xl font-bold text-gray-900">{t('customers.title')}</h2>
         <Button>
           <Plus className="h-4 w-4 mr-2" />
-          {t('customers.add')}
+          {t('customers.addCustomer')}
         </Button>
       </div>
 
@@ -62,12 +62,12 @@ export const CustomerModule = () => {
         <div className="relative flex-1 max-w-md">
           <Search className={`absolute top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 ${isRTL ? 'right-3' : 'left-3'}`} />
           <Input
-            placeholder={t('customers.search')}
+            placeholder={t('customers.searchCustomers')}
             className={isRTL ? 'pr-10' : 'pl-10'}
           />
         </div>
-        <Button variant="outline">{t('customers.filter')}</Button>
-        <Button variant="outline">{t('customers.export')}</Button>
+        <Button variant="outline">{t('customers.filterCustomers')}</Button>
+        <Button variant="outline">{t('customers.exportCustomers')}</Button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -125,7 +125,7 @@ export const CustomerModule = () => {
               
               <div className={`flex ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                 <Button variant="outline" size="sm" className="flex-1">{t('customers.viewDetails')}</Button>
-                <Button variant="outline" size="sm" className="flex-1">{t('customers.newQuote')}</Button>
+                <Button variant="outline" size="sm" className="flex-1">{t('customers.createQuote')}</Button>
               </div>
             </CardContent>
           </Card>

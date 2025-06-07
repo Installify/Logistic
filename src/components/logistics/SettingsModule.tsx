@@ -38,7 +38,9 @@ const defaultSettings = {
   timezone: "UTC+0 (GMT)",
   currency: "USD - US Dollar",
   dateFormat: "MM/DD/YYYY",
-  logoUrl: null as string | null
+  logoUrl: null as string | null,
+  sidebarTitle: "INSTALLIFY",
+  sidebarSubtitle: "Freight & Logistics"
 };
 
 // Comprehensive timezone list
@@ -401,6 +403,22 @@ export const SettingsModule = () => {
                   <Input 
                     value={formData.companyName}
                     onChange={(e) => handleInputChange('companyName', e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-gray-600">{t('settings.sidebarTitle')}</label>
+                  <Input 
+                    value={formData.sidebarTitle}
+                    onChange={(e) => handleInputChange('sidebarTitle', e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-gray-600">{t('settings.sidebarSubtitle')}</label>
+                  <Input 
+                    value={formData.sidebarSubtitle}
+                    onChange={(e) => handleInputChange('sidebarSubtitle', e.target.value)}
                   />
                 </div>
                 

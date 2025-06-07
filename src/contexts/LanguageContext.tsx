@@ -71,6 +71,15 @@ const translations = {
     // Customers Module
     'customers.title': 'Customer Management',
     'customers.subtitle': 'Manage your client relationships',
+    'customers.addCustomer': 'Add Customer',
+    'customers.searchCustomers': 'Search customers...',
+    'customers.filterCustomers': 'Filter',
+    'customers.exportCustomers': 'Export',
+    'customers.totalShipments': 'Total Shipments',
+    'customers.totalValue': 'Total Value',
+    'customers.lastShipment': 'Last Shipment',
+    'customers.viewDetails': 'View Details',
+    'customers.createQuote': 'Create Quote',
 
     // Accounting Module
     'accounting.title': 'Accounting & Finance',
@@ -120,6 +129,8 @@ const translations = {
     'settings.logo': 'Company Logo',
     'settings.uploadLogo': 'Upload Logo',
     'settings.companyName': 'Company Name',
+    'settings.sidebarTitle': 'Sidebar Title',
+    'settings.sidebarSubtitle': 'Sidebar Subtitle',
     'settings.address': 'Address',
     'settings.phone': 'Phone',
     'settings.email': 'Email',
@@ -187,6 +198,7 @@ const translations = {
     'status.delivered': 'Delivered',
     'status.loading': 'Loading',
     'status.customs': 'Customs',
+    'status.active': 'Active',
   },
   ar: {
     // Arabic translations
@@ -232,6 +244,15 @@ const translations = {
 
     'customers.title': 'إدارة العملاء',
     'customers.subtitle': 'إدارة علاقاتك مع العملاء',
+    'customers.addCustomer': 'إضافة عميل',
+    'customers.searchCustomers': 'البحث في العملاء...',
+    'customers.filterCustomers': 'تصفية',
+    'customers.exportCustomers': 'تصدير',
+    'customers.totalShipments': 'إجمالي الشحنات',
+    'customers.totalValue': 'إجمالي القيمة',
+    'customers.lastShipment': 'آخر شحنة',
+    'customers.viewDetails': 'عرض التفاصيل',
+    'customers.createQuote': 'إنشاء عرض سعر',
 
     'accounting.title': 'المحاسبة والمالية',
     'accounting.subtitle': 'الإدارة المالية والتقارير',
@@ -276,6 +297,8 @@ const translations = {
     'settings.logo': 'شعار الشركة',
     'settings.uploadLogo': 'رفع الشعار',
     'settings.companyName': 'اسم الشركة',
+    'settings.sidebarTitle': 'عنوان الشريط الجانبي',
+    'settings.sidebarSubtitle': 'العنوان الفرعي للشريط الجانبي',
     'settings.address': 'العنوان',
     'settings.phone': 'الهاتف',
     'settings.email': 'البريد الإلكتروني',
@@ -342,6 +365,7 @@ const translations = {
     'status.delivered': 'تم التسليم',
     'status.loading': 'جاري التحميل',
     'status.customs': 'الجمارك',
+    'status.active': 'نشط',
   }
 };
 

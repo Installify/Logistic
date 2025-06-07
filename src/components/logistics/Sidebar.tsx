@@ -22,8 +22,10 @@ export const Sidebar = ({ activeModule, setActiveModule }: SidebarProps) => {
   const { t, language } = useLanguage();
   const isRTL = language === 'ar';
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [sidebarTitle, setSidebarTitle] = useState<string>('INSTALLIFY');
+  const [sidebarSubtitle, setSidebarSubtitle] = useState<string>('Freight & Logistics');
 
-  // Load logo from settings
+  // Load logo and titles from settings
   useEffect(() => {
     const savedSettings = localStorage.getItem('logiscrm-settings');
     if (savedSettings) {
@@ -35,8 +37,14 @@ export const Sidebar = ({ activeModule, setActiveModule }: SidebarProps) => {
           // Use the uploaded logo as default
           setLogoUrl('/lovable-uploads/ff10179a-08ec-4473-a2c9-29d289b97252.png');
         }
+        if (parsed.sidebarTitle) {
+          setSidebarTitle(parsed.sidebarTitle);
+        }
+        if (parsed.sidebarSubtitle) {
+          setSidebarSubtitle(parsed.sidebarSubtitle);
+        }
       } catch (error) {
-        console.error('Error loading logo from settings:', error);
+        console.error('Error loading settings:', error);
         // Use the uploaded logo as fallback
         setLogoUrl('/lovable-uploads/ff10179a-08ec-4473-a2c9-29d289b97252.png');
       }
@@ -73,8 +81,8 @@ export const Sidebar = ({ activeModule, setActiveModule }: SidebarProps) => {
             )}
           </div>
           <div className={isRTL ? 'text-right' : 'text-left'}>
-            <h2 className="text-xl font-bold">{t('sidebar.title')}</h2>
-            <p className="text-slate-400 text-sm">{t('sidebar.subtitle')}</p>
+            <h2 className="text-xl font-bold">{sidebarTitle}</h2>
+            <p className="text-slate-400 text-sm">{sidebarSubtitle}</p>
           </div>
         </div>
       </div>
