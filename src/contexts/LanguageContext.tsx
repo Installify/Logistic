@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface LanguageContextType {
@@ -27,7 +28,7 @@ const currencyRates: { [key: string]: number } = {
 const translations = {
   en: {
     // Sidebar translations
-    'sidebar.title': 'LogisCRM',
+    'sidebar.title': 'INSTALLIFY',
     'sidebar.subtitle': 'Freight & Logistics',
     'sidebar.dashboard': 'Dashboard',
     'sidebar.shipments': 'Shipments',
@@ -41,12 +42,12 @@ const translations = {
     'sidebar.status': 'Online',
 
     // Header translations
-    'header.title': 'LogisCRM',
+    'header.title': 'INSTALLIFY Logistics',
     'header.search': 'Search...',
     'header.profile': 'Profile',
 
     // Dashboard translations
-    'dashboard.title': 'Dashboard',
+    'dashboard.title': 'Dashboard Overview',
     'dashboard.exportReport': 'Export Report',
     'dashboard.newShipment': 'New Shipment',
     'dashboard.activeShipments': 'Active Shipments',
@@ -63,8 +64,21 @@ const translations = {
     'dashboard.newCustomer': 'New customer registration',
     'dashboard.customerVerification': 'Requires verification and approval',
 
+    // Shipments Module
+    'shipments.title': 'Shipment Management',
+    'shipments.subtitle': 'Track and manage all your shipments',
+
+    // Customers Module
+    'customers.title': 'Customer Management',
+    'customers.subtitle': 'Manage your client relationships',
+
+    // Accounting Module
+    'accounting.title': 'Accounting & Finance',
+    'accounting.subtitle': 'Financial management and reporting',
+
     // Invoice translations
     'invoices.title': 'Invoice Management',
+    'invoices.subtitle': 'Create and manage invoices',
     'invoices.create': 'Create Invoice',
     'invoices.bulkExport': 'Bulk Export',
     'invoices.totalInvoices': 'Total Invoices',
@@ -86,8 +100,17 @@ const translations = {
     'invoices.shipmentReference': 'Shipment Reference',
     'invoices.services': 'Services',
 
+    // Cargo Module
+    'cargo.title': 'Cargo Management',
+    'cargo.subtitle': 'Track cargo and container operations',
+
+    // Reports Module
+    'reports.title': 'Reports & Analytics',
+    'reports.subtitle': 'Business intelligence and insights',
+
     // Settings translations
     'settings.title': 'System Settings',
+    'settings.subtitle': 'Configure system preferences',
     'settings.save': 'Save Changes',
     'settings.general': 'General',
     'settings.notifications': 'Notifications',
@@ -108,6 +131,53 @@ const translations = {
     'settings.saveSuccess': 'Settings Saved',
     'settings.saveSuccessMessage': 'Your settings have been saved successfully.',
 
+    // Settings additional translations
+    'settings.emailNotifications': 'Email Notifications',
+    'settings.smsNotifications': 'SMS Notifications',
+    'settings.shipmentAlerts': 'Shipment Alerts',
+    'settings.invoiceReminders': 'Invoice Reminders',
+    'settings.systemUpdates': 'System Updates',
+    'settings.mobileAlerts': 'Mobile Alerts',
+    'settings.enabled': 'Enabled',
+    'settings.disabled': 'Disabled',
+    'settings.userAccounts': 'User Accounts',
+    'settings.addUser': 'Add User',
+    'settings.admin': 'Admin',
+    'settings.manager': 'Manager',
+    'settings.operator': 'Operator',
+    'settings.active': 'Active',
+    'settings.inactive': 'Inactive',
+    'settings.apiIntegrations': 'API Integrations',
+    'settings.connected': 'Connected',
+    'settings.disconnected': 'Disconnected',
+    'settings.configure': 'Configure',
+    'settings.lastSync': 'Last Sync',
+    'settings.testConnection': 'Test Connection',
+    'settings.saveConfiguration': 'Save Configuration',
+    'settings.configureIntegrationSettings': 'Configure the integration settings below',
+    'settings.smtpServer': 'SMTP Server',
+    'settings.enterSmtpServer': 'Enter SMTP server',
+    'settings.port': 'Port',
+    'settings.encryption': 'Encryption',
+    'settings.username': 'Username',
+    'settings.enterEmail': 'Enter email address',
+    'settings.password': 'Password',
+    'settings.enterPassword': 'Enter password',
+    'settings.apiEndpoint': 'API Endpoint',
+    'settings.enterApiEndpoint': 'Enter API endpoint',
+    'settings.apiKey': 'API Key',
+    'settings.enterApiKey': 'Enter API key',
+    'settings.region': 'Region',
+    'settings.selectRegion': 'Select region',
+    'settings.shippingLines': 'Shipping Lines',
+    'settings.selectShippingLine': 'Select shipping line',
+    'settings.provider': 'Provider',
+    'settings.senderNumber': 'Sender Number',
+    'settings.enterSenderNumber': 'Enter sender number',
+    'settings.webhookUrl': 'Webhook URL',
+    'settings.enterWebhookUrl': 'Enter webhook URL',
+    'settings.noConfigurationAvailable': 'No configuration options available for this integration.',
+
     // Status translations
     'status.paid': 'Paid',
     'status.pending': 'Pending',
@@ -119,8 +189,8 @@ const translations = {
     'status.customs': 'Customs',
   },
   ar: {
-    // Arabic translations (existing ones)
-    'sidebar.title': 'نظام اللوجستيات',
+    // Arabic translations
+    'sidebar.title': 'إنستاليفاي',
     'sidebar.subtitle': 'الشحن والخدمات اللوجستية',
     'sidebar.dashboard': 'لوحة القيادة',
     'sidebar.shipments': 'الشحنات',
@@ -134,12 +204,12 @@ const translations = {
     'sidebar.status': 'متصل',
 
     // Header translations in Arabic
-    'header.title': 'نظام اللوجستيات',
+    'header.title': 'إنستاليفاي اللوجستيات',
     'header.search': 'البحث...',
     'header.profile': 'الملف الشخصي',
 
     // Dashboard translations in Arabic
-    'dashboard.title': 'لوحة القيادة',
+    'dashboard.title': 'نظرة عامة على لوحة القيادة',
     'dashboard.exportReport': 'تصدير التقرير',
     'dashboard.newShipment': 'شحنة جديدة',
     'dashboard.activeShipments': 'الشحنات النشطة',
@@ -156,7 +226,18 @@ const translations = {
     'dashboard.newCustomer': 'تسجيل عميل جديد',
     'dashboard.customerVerification': 'يتطلب التحقق والموافقة',
 
+    // Module titles in Arabic
+    'shipments.title': 'إدارة الشحنات',
+    'shipments.subtitle': 'تتبع وإدارة جميع شحناتك',
+
+    'customers.title': 'إدارة العملاء',
+    'customers.subtitle': 'إدارة علاقاتك مع العملاء',
+
+    'accounting.title': 'المحاسبة والمالية',
+    'accounting.subtitle': 'الإدارة المالية والتقارير',
+
     'invoices.title': 'إدارة الفواتير',
+    'invoices.subtitle': 'إنشاء وإدارة الفواتير',
     'invoices.create': 'إنشاء فاتورة',
     'invoices.bulkExport': 'تصدير مجمع',
     'invoices.totalInvoices': 'إجمالي الفواتير',
@@ -178,7 +259,14 @@ const translations = {
     'invoices.shipmentReference': 'مرجع الشحنة',
     'invoices.services': 'الخدمات',
 
+    'cargo.title': 'إدارة البضائع',
+    'cargo.subtitle': 'تتبع عمليات البضائع والحاويات',
+
+    'reports.title': 'التقارير والتحليلات',
+    'reports.subtitle': 'ذكاء الأعمال والرؤى',
+
     'settings.title': 'إعدادات النظام',
+    'settings.subtitle': 'تكوين تفضيلات النظام',
     'settings.save': 'حفظ التغييرات',
     'settings.general': 'عام',
     'settings.notifications': 'الإشعارات',
@@ -198,6 +286,53 @@ const translations = {
     'settings.dateFormat': 'تنسيق التاريخ',
     'settings.saveSuccess': 'تم حفظ الإعدادات',
     'settings.saveSuccessMessage': 'تم حفظ إعداداتك بنجاح.',
+
+    // Additional Arabic translations
+    'settings.emailNotifications': 'إشعارات البريد الإلكتروني',
+    'settings.smsNotifications': 'إشعارات الرسائل النصية',
+    'settings.shipmentAlerts': 'تنبيهات الشحنات',
+    'settings.invoiceReminders': 'تذكيرات الفواتير',
+    'settings.systemUpdates': 'تحديثات النظام',
+    'settings.mobileAlerts': 'التنبيهات المحمولة',
+    'settings.enabled': 'مفعل',
+    'settings.disabled': 'معطل',
+    'settings.userAccounts': 'حسابات المستخدمين',
+    'settings.addUser': 'إضافة مستخدم',
+    'settings.admin': 'مشرف',
+    'settings.manager': 'مدير',
+    'settings.operator': 'مشغل',
+    'settings.active': 'نشط',
+    'settings.inactive': 'غير نشط',
+    'settings.apiIntegrations': 'تكاملات API',
+    'settings.connected': 'متصل',
+    'settings.disconnected': 'غير متصل',
+    'settings.configure': 'تكوين',
+    'settings.lastSync': 'آخر مزامنة',
+    'settings.testConnection': 'اختبار الاتصال',
+    'settings.saveConfiguration': 'حفظ التكوين',
+    'settings.configureIntegrationSettings': 'قم بتكوين إعدادات التكامل أدناه',
+    'settings.smtpServer': 'خادم SMTP',
+    'settings.enterSmtpServer': 'أدخل خادم SMTP',
+    'settings.port': 'المنفذ',
+    'settings.encryption': 'التشفير',
+    'settings.username': 'اسم المستخدم',
+    'settings.enterEmail': 'أدخل عنوان البريد الإلكتروني',
+    'settings.password': 'كلمة المرور',
+    'settings.enterPassword': 'أدخل كلمة المرور',
+    'settings.apiEndpoint': 'نقطة نهاية API',
+    'settings.enterApiEndpoint': 'أدخل نقطة نهاية API',
+    'settings.apiKey': 'مفتاح API',
+    'settings.enterApiKey': 'أدخل مفتاح API',
+    'settings.region': 'المنطقة',
+    'settings.selectRegion': 'اختر المنطقة',
+    'settings.shippingLines': 'خطوط الشحن',
+    'settings.selectShippingLine': 'اختر خط الشحن',
+    'settings.provider': 'المزود',
+    'settings.senderNumber': 'رقم المرسل',
+    'settings.enterSenderNumber': 'أدخل رقم المرسل',
+    'settings.webhookUrl': 'رابط Webhook',
+    'settings.enterWebhookUrl': 'أدخل رابط Webhook',
+    'settings.noConfigurationAvailable': 'لا توجد خيارات تكوين متاحة لهذا التكامل.',
 
     'status.paid': 'مدفوع',
     'status.pending': 'معلق',
