@@ -33,8 +33,8 @@ export const ReportsModule = () => {
       icon: TrendingUp,
       reports: [
         { name: t('reports.revenueAnalysis'), lastGenerated: "2024-01-10" },
-        { name: "Profit & Loss", lastGenerated: "2024-01-08" },
-        { name: "Cash Flow Analysis", lastGenerated: "2024-01-05" }
+        { name: t('reports.profitLoss'), lastGenerated: "2024-01-08" },
+        { name: t('reports.cashFlowAnalysis'), lastGenerated: "2024-01-05" }
       ]
     },
     {
@@ -43,7 +43,7 @@ export const ReportsModule = () => {
       reports: [
         { name: t('reports.customerAnalysis'), lastGenerated: "2024-01-10" },
         { name: t('reports.customerSatisfaction'), lastGenerated: "2024-01-08" },
-        { name: "Customer Growth", lastGenerated: "2024-01-05" }
+        { name: t('reports.customerGrowth'), lastGenerated: "2024-01-05" }
       ]
     },
     {
@@ -52,7 +52,7 @@ export const ReportsModule = () => {
       reports: [
         { name: t('reports.performanceMetrics'), lastGenerated: "2024-01-10" },
         { name: t('reports.averageTransitTime'), lastGenerated: "2024-01-08" },
-        { name: "Resource Utilization", lastGenerated: "2024-01-05" }
+        { name: t('reports.resourceUtilization'), lastGenerated: "2024-01-05" }
       ]
     }
   ];
@@ -124,9 +124,9 @@ export const ReportsModule = () => {
 
       <Tabs defaultValue="categories" className="space-y-6">
         <TabsList>
-          <TabsTrigger value="categories">Report Categories</TabsTrigger>
-          <TabsTrigger value="scheduled">Scheduled Reports</TabsTrigger>
-          <TabsTrigger value="custom">Custom Reports</TabsTrigger>
+          <TabsTrigger value="categories">{t('reports.reportCategories')}</TabsTrigger>
+          <TabsTrigger value="scheduled">{t('reports.scheduledReports')}</TabsTrigger>
+          <TabsTrigger value="custom">{t('reports.customReports')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="categories">
@@ -148,7 +148,7 @@ export const ReportsModule = () => {
                           <FileText className="h-4 w-4 text-gray-600" />
                           <div>
                             <p className="font-medium">{report.name}</p>
-                            <p className="text-sm text-gray-600">Last: {report.lastGenerated}</p>
+                            <p className="text-sm text-gray-600">{t('reports.last')}: {report.lastGenerated}</p>
                           </div>
                         </div>
                         <div className={`flex ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
@@ -169,7 +169,7 @@ export const ReportsModule = () => {
         <TabsContent value="scheduled">
           <Card>
             <CardHeader>
-              <CardTitle>Scheduled Reports</CardTitle>
+              <CardTitle>{t('reports.scheduledReports')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -177,12 +177,12 @@ export const ReportsModule = () => {
                   <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
                     <Calendar className="h-5 w-5 text-blue-600" />
                     <div>
-                      <p className="font-medium">Monthly Revenue Report</p>
-                      <p className="text-sm text-gray-600">Every 1st of the month • Next: Feb 1, 2024</p>
+                      <p className="font-medium">{t('reports.monthlyRevenueReport')}</p>
+                      <p className="text-sm text-gray-600">{t('reports.everyFirstOfMonth')} • {t('reports.next')}: Feb 1, 2024</p>
                     </div>
                   </div>
                   <div className={`flex ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
-                    <Button variant="outline" size="sm">Edit</Button>
+                    <Button variant="outline" size="sm">{t('reports.edit')}</Button>
                     <Button variant="outline" size="sm">{t('reports.downloadPdf')}</Button>
                   </div>
                 </div>
@@ -191,12 +191,12 @@ export const ReportsModule = () => {
                   <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
                     <Calendar className="h-5 w-5 text-green-600" />
                     <div>
-                      <p className="font-medium">Weekly Operations Summary</p>
-                      <p className="text-sm text-gray-600">Every Monday • Next: Jan 15, 2024</p>
+                      <p className="font-medium">{t('reports.weeklyOperationsSummary')}</p>
+                      <p className="text-sm text-gray-600">{t('reports.everyMonday')} • {t('reports.next')}: Jan 15, 2024</p>
                     </div>
                   </div>
                   <div className={`flex ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
-                    <Button variant="outline" size="sm">Edit</Button>
+                    <Button variant="outline" size="sm">{t('reports.edit')}</Button>
                     <Button variant="outline" size="sm">{t('reports.downloadPdf')}</Button>
                   </div>
                 </div>
@@ -205,12 +205,12 @@ export const ReportsModule = () => {
                   <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
                     <Calendar className="h-5 w-5 text-purple-600" />
                     <div>
-                      <p className="font-medium">Customer Performance Report</p>
-                      <p className="text-sm text-gray-600">Every 15th of the month • Next: Jan 15, 2024</p>
+                      <p className="font-medium">{t('reports.customerPerformanceReport')}</p>
+                      <p className="text-sm text-gray-600">{t('reports.everyFifteenthOfMonth')} • {t('reports.next')}: Jan 15, 2024</p>
                     </div>
                   </div>
                   <div className={`flex ${isRTL ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
-                    <Button variant="outline" size="sm">Edit</Button>
+                    <Button variant="outline" size="sm">{t('reports.edit')}</Button>
                     <Button variant="outline" size="sm">{t('reports.downloadPdf')}</Button>
                   </div>
                 </div>
@@ -230,37 +230,37 @@ export const ReportsModule = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Create Custom Report</CardTitle>
+                <CardTitle>{t('reports.createCustomReport')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-600">Report Name</label>
-                  <input className="w-full mt-1 p-2 border rounded-lg" placeholder="Enter report name" />
+                  <label className="text-sm font-medium text-gray-600">{t('reports.reportName')}</label>
+                  <input className="w-full mt-1 p-2 border rounded-lg" placeholder={t('reports.enterReportName')} />
                 </div>
                 
                 <div>
-                  <label className="text-sm font-medium text-gray-600">Data Source</label>
+                  <label className="text-sm font-medium text-gray-600">{t('reports.dataSource')}</label>
                   <select className="w-full mt-1 p-2 border rounded-lg">
-                    <option>Shipments</option>
-                    <option>Customers</option>
-                    <option>Financial</option>
-                    <option>Operations</option>
+                    <option>{t('shipments.title')}</option>
+                    <option>{t('customers.title')}</option>
+                    <option>{t('reports.financial')}</option>
+                    <option>{t('reports.operations')}</option>
                   </select>
                 </div>
                 
                 <div>
-                  <label className="text-sm font-medium text-gray-600">Date Range</label>
+                  <label className="text-sm font-medium text-gray-600">{t('reports.dateRange')}</label>
                   <select className="w-full mt-1 p-2 border rounded-lg">
-                    <option>Last 30 days</option>
-                    <option>Last 3 months</option>
-                    <option>Last 6 months</option>
-                    <option>Last year</option>
-                    <option>Custom range</option>
+                    <option>{t('reports.lastThirtyDays')}</option>
+                    <option>{t('reports.lastThreeMonths')}</option>
+                    <option>{t('reports.lastSixMonths')}</option>
+                    <option>{t('reports.lastYear')}</option>
+                    <option>{t('reports.customRange')}</option>
                   </select>
                 </div>
                 
                 <div>
-                  <label className="text-sm font-medium text-gray-600">Report Format</label>
+                  <label className="text-sm font-medium text-gray-600">{t('reports.reportFormat')}</label>
                   <select className="w-full mt-1 p-2 border rounded-lg">
                     <option>PDF</option>
                     <option>Excel</option>
@@ -274,14 +274,14 @@ export const ReportsModule = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Recent Custom Reports</CardTitle>
+                <CardTitle>{t('reports.recentCustomReports')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div>
-                      <p className="font-medium">Q4 Performance Analysis</p>
-                      <p className="text-sm text-gray-600">Generated: Jan 8, 2024</p>
+                      <p className="font-medium">{t('reports.quarterlyPerformanceAnalysis')}</p>
+                      <p className="text-sm text-gray-600">{t('reports.generated')}: Jan 8, 2024</p>
                     </div>
                     <Button variant="outline" size="sm">
                       <Download className="h-4 w-4" />
@@ -290,8 +290,8 @@ export const ReportsModule = () => {
 
                   <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div>
-                      <p className="font-medium">Customer Retention Report</p>
-                      <p className="text-sm text-gray-600">Generated: Jan 5, 2024</p>
+                      <p className="font-medium">{t('reports.customerRetentionReport')}</p>
+                      <p className="text-sm text-gray-600">{t('reports.generated')}: Jan 5, 2024</p>
                     </div>
                     <Button variant="outline" size="sm">
                       <Download className="h-4 w-4" />
@@ -300,8 +300,8 @@ export const ReportsModule = () => {
 
                   <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div>
-                      <p className="font-medium">Route Efficiency Analysis</p>
-                      <p className="text-sm text-gray-600">Generated: Jan 3, 2024</p>
+                      <p className="font-medium">{t('reports.routeEfficiencyAnalysis')}</p>
+                      <p className="text-sm text-gray-600">{t('reports.generated')}: Jan 3, 2024</p>
                     </div>
                     <Button variant="outline" size="sm">
                       <Download className="h-4 w-4" />

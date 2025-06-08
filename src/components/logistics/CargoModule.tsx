@@ -244,11 +244,11 @@ export const CargoModule = () => {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Internal Dimensions</p>
+                    <p className="text-sm font-medium text-gray-600">{t('cargo.internalDimensions')}</p>
                     <p className="text-lg font-semibold">{container.dimensions}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Cargo Capacity</p>
+                    <p className="text-sm font-medium text-gray-600">{t('cargo.cargoCapacity')}</p>
                     <p className="text-lg font-semibold">{container.capacity}</p>
                   </div>
                   <Button variant="outline" className="w-full">
@@ -269,26 +269,26 @@ export const CargoModule = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="text-sm font-medium text-gray-600">{t('cargo.length')}</label>
-                  <Input placeholder="Enter length" type="number" />
+                  <Input placeholder={t('cargo.enterLength')} type="number" />
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-600">{t('cargo.width')}</label>
-                  <Input placeholder="Enter width" type="number" />
+                  <Input placeholder={t('cargo.enterWidth')} type="number" />
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-600">{t('cargo.height')}</label>
-                  <Input placeholder="Enter height" type="number" />
+                  <Input placeholder={t('cargo.enterHeight')} type="number" />
                 </div>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium text-gray-600">{t('cargo.actualWeight')}</label>
-                  <Input placeholder="Enter actual weight" type="number" />
+                  <Input placeholder={t('cargo.enterActualWeight')} type="number" />
                 </div>
                 <div>
                   <label className="text-sm font-medium text-gray-600">{t('cargo.quantity')}</label>
-                  <Input placeholder="Number of items" type="number" defaultValue="1" />
+                  <Input placeholder={t('cargo.numberOfItems')} type="number" defaultValue="1" />
                 </div>
               </div>
               
