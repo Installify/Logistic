@@ -114,6 +114,14 @@ export const Sidebar = ({ activeModule, setActiveModule }: SidebarProps) => {
       <div className={`p-4 border-t border-slate-800 ${isRTL ? 'text-right' : 'text-left'}`}>
         <div className="text-xs text-slate-400">
           <p>{t('sidebar.footer')}</p>
+          <a 
+            href="https://behance.net/jalalnasser" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-blue-400 hover:text-blue-300 transition-colors"
+          >
+            ({t('sidebar.developer')})
+          </a>
           <p className="text-green-400 mt-1">● {t('sidebar.status')}</p>
         </div>
       </div>
