@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface LanguageContextType {
@@ -23,6 +24,11 @@ const translations = {
       developer: "Jalal Nasser",
       status: "Operational",
     },
+    header: {
+      title: "Freight Management System",
+      search: "Search...",
+      profile: "Profile"
+    },
     dashboard: {
       title: "Dashboard",
       activeShipments: "Active Shipments",
@@ -42,7 +48,7 @@ const translations = {
       newShipment: "New Shipment"
     },
     customers: {
-      title: "Customers",
+      title: "Customer Management",
       addCustomer: "Add Customer",
       searchCustomers: "Search customers...",
       filterCustomers: "Filter",
@@ -54,7 +60,7 @@ const translations = {
       createQuote: "Create Quote"
     },
     accounting: {
-      title: "Accounting",
+      title: "Financial Management",
       exportReports: "Export Reports",
       newTransaction: "New Transaction",
       totalRevenue: "Total Revenue",
@@ -77,7 +83,7 @@ const translations = {
       equity: "Shareholders' Equity"
     },
     invoices: {
-      title: "Invoices",
+      title: "Invoice Management",
       bulkExport: "Bulk Export",
       create: "Create Invoice",
       totalInvoices: "Total Invoices",
@@ -100,7 +106,7 @@ const translations = {
       pdf: "PDF"
     },
     cargo: {
-      title: "Cargo",
+      title: "Cargo Management",
       volumeCalculator: "Volume Calculator",
       add: "Add Cargo",
       totalCargoItems: "Total Cargo Items",
@@ -144,7 +150,7 @@ const translations = {
       chargeableWeight: "Chargeable Weight"
     },
     reports: {
-      title: "Reports",
+      title: "Reports & Analytics",
       export: "Export All",
       generate: "Generate Report",
       onTimeDelivery: "On-Time Delivery",
@@ -202,14 +208,14 @@ const translations = {
       routeEfficiencyAnalysis: "Route Efficiency Analysis"
     },
     settings: {
-      title: "Settings",
+      title: "System Settings",
       save: "Save Changes",
       saveSuccess: "Settings Saved",
       saveSuccessMessage: "Your settings have been successfully saved.",
-      general: "General",
-      notifications: "Notifications",
-      users: "Users",
-      integrations: "Integrations",
+      general: "General Settings",
+      notifications: "Notification Preferences",
+      users: "User Management",
+      integrations: "System Integrations",
       companyInfo: "Company Information",
       logo: "Company Logo",
       uploadLogo: "Upload Logo",
@@ -283,7 +289,7 @@ const translations = {
       sidebarSubtitle: "Sidebar Subtitle"
     },
     shipments: {
-      title: "Shipments",
+      title: "Shipment Management",
       customer: "Customer"
     },
     status: {
@@ -312,6 +318,11 @@ const translations = {
       developer: "جلال ناصر",
       status: "التشغيلية",
     },
+    header: {
+      title: "نظام إدارة الشحن",
+      search: "بحث...",
+      profile: "الملف الشخصي"
+    },
     dashboard: {
       title: "لوحة القيادة",
       activeShipments: "الشحنات النشطة",
@@ -331,7 +342,7 @@ const translations = {
       newShipment: "شحنة جديدة"
     },
     customers: {
-      title: "العملاء",
+      title: "إدارة العملاء",
       addCustomer: "إضافة عميل",
       searchCustomers: "البحث عن العملاء...",
       filterCustomers: "تصفية",
@@ -343,7 +354,7 @@ const translations = {
       createQuote: "إنشاء عرض أسعار"
     },
     accounting: {
-      title: "المحاسبة",
+      title: "الإدارة المالية",
       exportReports: "تصدير التقارير",
       newTransaction: "معاملة جديدة",
       totalRevenue: "إجمالي الإيرادات",
@@ -366,7 +377,7 @@ const translations = {
       equity: "حقوق المساهمين"
     },
     invoices: {
-      title: "الفواتير",
+      title: "إدارة الفواتير",
       bulkExport: "تصدير مجمع",
       create: "إنشاء فاتورة",
       totalInvoices: "إجمالي الفواتير",
@@ -389,7 +400,7 @@ const translations = {
       pdf: "PDF"
     },
     cargo: {
-      title: "البضائع",
+      title: "إدارة البضائع",
       volumeCalculator: "حاسبة الحجم",
       add: "إضافة بضائع",
       totalCargoItems: "إجمالي عناصر البضائع",
@@ -433,7 +444,7 @@ const translations = {
       chargeableWeight: "الوزن القابل للشحن"
     },
     reports: {
-      title: "التقارير",
+      title: "التقارير والتحليلات",
       export: "تصدير الكل",
       generate: "إنشاء تقرير",
       onTimeDelivery: "التسليم في الوقت المحدد",
@@ -491,14 +502,14 @@ const translations = {
       routeEfficiencyAnalysis: "تحليل كفاءة المسار"
     },
     settings: {
-      title: "إعدادات",
+      title: "إعدادات النظام",
       save: "حفظ التغييرات",
       saveSuccess: "تم حفظ الإعدادات",
       saveSuccessMessage: "تم حفظ الإعدادات بنجاح.",
-      general: "عام",
-      notifications: "إشعارات",
-      users: "المستخدمون",
-      integrations: "عمليات التكامل",
+      general: "الإعدادات العامة",
+      notifications: "تفضيلات الإشعارات",
+      users: "إدارة المستخدمين",
+      integrations: "تكاملات النظام",
       companyInfo: "معلومات الشركة",
       logo: "شعار الشركة",
       uploadLogo: "تحميل الشعار",
@@ -572,7 +583,7 @@ const translations = {
       sidebarSubtitle: "العنوان الفرعي للشريط الجانبي"
     },
     shipments: {
-      title: "الشحنات",
+      title: "إدارة الشحنات",
       customer: "العميل"
     },
     status: {

@@ -120,7 +120,7 @@ export const Sidebar = ({ activeModule, setActiveModule }: SidebarProps) => {
             rel="noopener noreferrer"
             className="text-blue-400 hover:text-blue-300 transition-colors"
           >
-            ({t('sidebar.developer')})
+            {t('sidebar.developer')}
           </a>
           <p className="text-green-400 mt-1">● {t('sidebar.status')}</p>
         </div>
