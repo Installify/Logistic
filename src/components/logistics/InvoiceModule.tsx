@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,15 +17,10 @@ import {
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export const InvoiceModule = () => {
-  const { t, language, currency, convertCurrency } = useLanguage();
+  const { t, language } = useLanguage();
   const isRTL = language === 'ar';
 
-  const [displayCurrency, setDisplayCurrency] = useState(currency);
-
-  // Update display currency when settings currency changes
-  useEffect(() => {
-    setDisplayCurrency(currency);
-  }, [currency]);
+  const [displayCurrency, setDisplayCurrency] = useState('USD');
 
   const baseInvoices = [
     {
@@ -64,11 +58,11 @@ export const InvoiceModule = () => {
     }
   ];
 
-  // Convert invoice amounts to display currency
+  // Use the base invoice amounts directly
   const invoices = baseInvoices.map(invoice => ({
     ...invoice,
-    displayAmount: convertCurrency(invoice.amount, invoice.baseCurrency, displayCurrency),
-    displayCurrency
+    displayAmount: invoice.amount,
+    displayCurrency: invoice.baseCurrency
   }));
 
   // Calculate totals in display currency
