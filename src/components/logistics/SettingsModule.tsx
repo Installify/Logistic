@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -129,7 +130,7 @@ export const SettingsModule = () => {
     {
       name: "Customs API",
       status: "Connected",
-      description: "Real-time customs clearance updates",
+      description: t('settings.customsApiDescription'),
       lastSync: "2024-01-10 14:30",
       icon: Zap,
       configurable: true
@@ -137,7 +138,7 @@ export const SettingsModule = () => {
     {
       name: "Shipping Lines API",
       status: "Connected", 
-      description: "Container tracking and schedules",
+      description: t('settings.shippingLinesApiDescription'),
       lastSync: "2024-01-10 14:25",
       icon: Zap,
       configurable: true
@@ -145,7 +146,7 @@ export const SettingsModule = () => {
     {
       name: "Payment Gateway",
       status: "Disconnected",
-      description: "Online payment processing",
+      description: t('settings.paymentGatewayDescription'),
       lastSync: "Never",
       icon: Zap,
       configurable: true
@@ -153,7 +154,7 @@ export const SettingsModule = () => {
     {
       name: "SMS Service",
       status: "Connected",
-      description: "SMS notifications and alerts",
+      description: t('settings.smsServiceDescription'),
       lastSync: "2024-01-10 14:20",
       icon: Zap,
       configurable: true
@@ -161,7 +162,7 @@ export const SettingsModule = () => {
     {
       name: "Zoho SMTP API",
       status: "Disconnected",
-      description: "Email delivery service for notifications",
+      description: t('settings.emailServiceDescription'),
       lastSync: "Never",
       icon: Mail,
       configurable: true
@@ -391,7 +392,7 @@ export const SettingsModule = () => {
                           </Button>
                         </label>
                         {formData.logoUrl && (
-                          <p className="text-xs text-gray-600 mt-1">Logo uploaded successfully</p>
+                          <p className="text-xs text-gray-600 mt-1">{t('settings.logoUploadedSuccessfully')}</p>
                         )}
                       </div>
                     </div>
@@ -525,7 +526,7 @@ export const SettingsModule = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium">{t('settings.shipmentAlerts')}</p>
-                    <p className="text-sm text-gray-600">Receive updates on shipment status changes</p>
+                    <p className="text-sm text-gray-600">{t('settings.shipmentAlertsDescription')}</p>
                   </div>
                   <Badge className="bg-green-100 text-green-800">{t('settings.enabled')}</Badge>
                 </div>
@@ -533,7 +534,7 @@ export const SettingsModule = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium">{t('settings.invoiceReminders')}</p>
-                    <p className="text-sm text-gray-600">Automated payment reminders</p>
+                    <p className="text-sm text-gray-600">{t('settings.invoiceRemindersDescription')}</p>
                   </div>
                   <Badge className="bg-green-100 text-green-800">{t('settings.enabled')}</Badge>
                 </div>
@@ -541,7 +542,7 @@ export const SettingsModule = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium">{t('settings.systemUpdates')}</p>
-                    <p className="text-sm text-gray-600">System maintenance and updates</p>
+                    <p className="text-sm text-gray-600">{t('settings.systemUpdatesDescription')}</p>
                   </div>
                   <Badge className="bg-gray-100 text-gray-800">{t('settings.disabled')}</Badge>
                 </div>
@@ -556,23 +557,23 @@ export const SettingsModule = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium">{t('settings.mobileAlerts')}</p>
-                    <p className="text-sm text-gray-600">Critical alerts via SMS</p>
+                    <p className="text-sm text-gray-600">{t('settings.mobileAlertsDescription')}</p>
                   </div>
                   <Badge className="bg-green-100 text-green-800">{t('settings.enabled')}</Badge>
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium">Customer Notifications</p>
-                    <p className="text-sm text-gray-600">Send SMS updates to customers</p>
+                    <p className="font-medium">{t('settings.customerNotifications')}</p>
+                    <p className="text-sm text-gray-600">{t('settings.customerNotificationsDescription')}</p>
                   </div>
                   <Badge className="bg-green-100 text-green-800">{t('settings.enabled')}</Badge>
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium">Emergency Alerts</p>
-                    <p className="text-sm text-gray-600">System failures and emergencies</p>
+                    <p className="font-medium">{t('settings.emergencyAlerts')}</p>
+                    <p className="text-sm text-gray-600">{t('settings.emergencyAlertsDescription')}</p>
                   </div>
                   <Badge className="bg-green-100 text-green-800">{t('settings.enabled')}</Badge>
                 </div>
@@ -606,7 +607,7 @@ export const SettingsModule = () => {
                       <div>
                         <p className="font-medium">{user.name}</p>
                         <p className="text-sm text-gray-600">{user.email}</p>
-                        <p className="text-xs text-gray-500">Last login: {user.lastLogin}</p>
+                        <p className="text-xs text-gray-500">{t('settings.lastLogin')}: {user.lastLogin}</p>
                       </div>
                     </div>
                     <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>

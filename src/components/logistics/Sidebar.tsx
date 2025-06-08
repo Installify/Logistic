@@ -69,7 +69,7 @@ export const Sidebar = ({ activeModule, setActiveModule }: SidebarProps) => {
     <div className="w-64 bg-slate-900 text-white flex flex-col">
       <div className={`p-6 border-b border-slate-800`}>
         <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
-          <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center overflow-hidden">
+          <div className="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden bg-transparent">
             {logoUrl ? (
               <img 
                 src={logoUrl} 
