@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface LanguageContextType {
@@ -290,7 +289,20 @@ const translations = {
     },
     shipments: {
       title: "Shipment Management",
-      customer: "Customer"
+      new: "New Shipment",
+      all: "All Shipments",
+      sea: "Sea Freight",
+      air: "Air Freight",
+      land: "Land Transport",
+      search: "Search shipments",
+      filter: "Filter",
+      route: "Route",
+      customer: "Customer",
+      cargo: "Cargo",
+      eta: "ETA",
+      track: "Track",
+      documents: "Documents",
+      invoice: "Invoice"
     },
     status: {
       active: "Active",
@@ -584,7 +596,20 @@ const translations = {
     },
     shipments: {
       title: "إدارة الشحنات",
-      customer: "العميل"
+      new: "شحنة جديدة",
+      all: "جميع الشحنات",
+      sea: "الشحن البحري",
+      air: "الشحن الجوي",
+      land: "النقل البري",
+      search: "البحث في الشحنات",
+      filter: "تصفية",
+      route: "المسار",
+      customer: "العميل",
+      cargo: "البضائع",
+      eta: "الوقت المتوقع للوصول",
+      track: "تتبع",
+      documents: "المستندات",
+      invoice: "فاتورة"
     },
     status: {
       active: "نشط",
